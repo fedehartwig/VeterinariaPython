@@ -25,7 +25,9 @@
         width: 1.5rem;
         height: 100vh;
       }
-
+      .logo{
+        font color: white;
+      }
       .bi {
         vertical-align: -.125em;
         fill: currentColor;
@@ -38,8 +40,13 @@
         overflow-y: hidden;
       }
       .container{
-	padding-top: 60px;
+	     padding-top: 150px;
       }
+      .espacio{
+       padding-top:30px;
+       margin-left:100px;
+      }
+
       .nav-scroller .nav {
         display: flex;
         flex-wrap: nowrap;
