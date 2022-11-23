@@ -61,11 +61,15 @@ class Database():
 
     def create_usuarios (self, nombre, apellido, dni, telefono, mail, password):    #ANDA PIOLA
         sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombre, apellido, dni, telefono, mail, password)
+        flag =1
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            return flag 
         except Exception as e:
             print("No se creo el usuario")
+            flag=0
+            return flag 
 
     def create_especie (self, tipo, raza):    #ANDA PIOLA
         sql="insert into especie (Tipo, Raza) values ('{}', '{}')".format(tipo, raza)
