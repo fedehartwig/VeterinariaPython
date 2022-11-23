@@ -25,9 +25,7 @@
         width: 1.5rem;
         height: 100vh;
       }
-      .logo{
-        font color: white;
-      }
+      
       .bi {
         vertical-align: -.125em;
         fill: currentColor;
@@ -57,3 +55,7 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+
+      .a{
+        color: white;
+       }
