@@ -24,7 +24,10 @@ urlpatterns = [
     path('login/', login),
     path('post_usuario/', post_usuario),
     path('post_regsiter/', post_register),
-    path('register/', register),  
+    path('register/', register),
+    path('inicio/', inicio),
+    path('agendar_consulta/', agendar_consulta),
+    path('post_consulta/', post_consulta),  
     path('historial_consultas/',historial_consultas),
 ]
 
