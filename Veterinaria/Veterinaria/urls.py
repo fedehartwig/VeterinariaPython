@@ -17,11 +17,14 @@ from django.contrib import admin
 from django.urls import path
 from Veterinaria.views import *
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('/', login),
     path('login/', login),
-    path('register/', register),
-    path('historial/', historial),
-    path('inicio/', inicio),
-    path('recibirPost', recibirPOST)
+    path('post_usuario/', post_usuario),
+    path('post_regsiter/', post_register),
+    path('register/', register),  
+    path('historial_consultas/',historial_consultas),
 ]
+
