@@ -23,7 +23,7 @@ def post_register(request):
         dni_usr = request.POST["dni"]
         telefono_usr = request.POST["telefono"]
         contrasenia_usr = request.POST["password"]
-        db.create_user(nombre_usr,apellido_usr,dni_usr,telefono_usr,contrasenia_usr)
+        db.create_user(nombre_usr, apellido_usr, dni_usr, telefono_usr, contrasenia_usr)
         return inicio(request)
 
 def post_usuario(request):
