@@ -58,7 +58,6 @@ class Database():
             print("No hay nada en la tabla")
             return flag
 
-
     def create_usuarios (self, nombre, apellido, dni, telefono, mail, password):    #ANDA PIOLA
         sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombre, apellido, dni, telefono, mail, password)
         flag =1
@@ -203,9 +202,9 @@ class Database():
         except Exception as e:
             print("No se creo el turno")
     
-    def update_turno(self, fecha, hora):
+    #def update_turno(self, fecha, hora):
 
-    #FUNCIONES QUE FALTAN: MODIFICAR TURNO - 
+    #FUNCIONES QUE FALTAN: MODIFICAR TURNO - TRAER TODAS LAS CONSULTAS DE UN USER
 
 mydb = Database()
 #mydb.modificar_password_usuario("goleador3@gmail.com","1234")
@@ -224,7 +223,7 @@ mydb = Database()
 
 # mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
-#mydb.create_turno("2020-12-28", "15:30", "goleador3@gmail.com", "vet@gmail.com", "32154674")
+mydb.create_turno("2020-12-7", "18:30", "goleador4@gmail.com", "vet@gmail.com", "32154674")
 
 # now='5/5/22'
 # print("Before", now)
