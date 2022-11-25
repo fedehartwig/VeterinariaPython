@@ -207,7 +207,7 @@ class Database():
 
     #FUNCIONES QUE FALTAN: MODIFICAR TURNO - 
 
-mydb = Database()
+#mydb = Database()
 #mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 #mydb.all_usuarios()
 #hola = mydb.login("roman@gmail.com", "roman123")
