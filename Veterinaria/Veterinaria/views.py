@@ -37,11 +37,11 @@ def post_usuario(request):
 
 def inicio(request):
     usuario = db.traer_usuario(request.POST["email"]) #ver como manejar el doble return 
-    return render(request, "index.html", {"nombre" : usuario.nombre, "apellido" : usuario.apellido}) 
+    return render(request, "index.html", {"nombre" : usuario[0], "apellido" : usuario[1]}) 
 
 def agendar_consulta(request):
     usuario = db.traer_usuario(request.POST["email"]) #ver como manejar el doble return
-    return render(request, "ingreso_consulta.html", {"nombre" : usuario.nombre, "apellido" : usuario.apellido})        
+    return render(request, "ingreso_consulta.html", {"nombre" : usuario[0], "apellido" : usuario[1]})        
 
 def post_consulta(request):
     usuario = request.POST["usuario"]
@@ -56,6 +56,6 @@ def post_consulta(request):
 
 def historial_consultas(request):
     usuario = db.traer_usuario(request.POST["email"]) #ver como manejar el doble return
-    return render(request, "historial_consultas.html", {"nombre": usuario.nombre, "apellido" : usuario.apellido, "consultas" : db.consultas(usuario)}) #ver como implementar la lista de consultas 
+    return render(request, "historial_consultas.html", {"nombre": usuario[0], "apellido" : usuario[1], "consultas" : db.traer_consultas_usuario(usuario[4])}) #ver como implementar la lista de consultas 
 
 # VER COMO PASAR EL USUARIO ENTRE METODOS 

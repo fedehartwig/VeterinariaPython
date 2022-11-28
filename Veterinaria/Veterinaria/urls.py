@@ -20,14 +20,13 @@ from Veterinaria.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', login),
-    path('login/', login),
+    path('/', inicio, name = "home"),
+    path('login/', login, name = "login"),
     path('post_usuario/', post_usuario),
     path('post_regsiter/', post_register),
-    path('register/', register),
-    path('inicio/', inicio),
-    path('agendar_consulta/', agendar_consulta),
+    path('register/', register, name = "registro"),
+    path('agendar_consulta/', agendar_consulta, name = "consulta"),
     path('post_consulta/', post_consulta),  
-    path('historial_consultas/',historial_consultas),
+    path('historial_consultas/',historial_consultas, name = "historial"),
 ]
 

@@ -13,17 +13,19 @@ class Database():
         self.cursor = self.connection.cursor()
         print("La conexion fue exitosa")
 
-    def login (self, mail, password):   #ANDA PIOLA - devuelve true si esta correcta, false sino
+    def login (self, mail, password):   #ANDA PIOLA - devuelve 1 si esta correcta, 0 sino
         sql= "select Mail, Password from usuarios where Mail = '{}' and Password = '{}' ".format(mail, password)
+        flag = 0
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchone()
+            flag = 1
             # print(users[0])
             # print(users[1])
-            return True
+            return flag
         except Exception as e:
             print("No existe ese mail con esa password")
-            return False
+            return flag
 
     def traer_usuario (self, mail):   #ANDA PIOLA - devuelve el user (vacio o no) y un flag. Si flag = 0-> No hay usuarios, si flag=1 devuelve todos los campos del user
         sql = "SELECT Nombre, Apellido, DNI, Telefono, Mail FROM usuarios where Mail = ('{}')".format(mail)
@@ -44,13 +46,13 @@ class Database():
             print("No hay nada en la tabla")
             return flag
        
-    def traer_mascotas_usuario (self, mail):
+    def traer_mascotas_usuario (self, mail):    #ANDA PIOLA devuelve mascotas (vacio o no) y un flag. Si flag = 0-> No hay mascotas, si flag=1 devuelve todos los campos de mascotas del user
         sql = "SELECT mascotas.Nombre, Edad, Peso, Imagen FROM mascotas join usuarios on mascotas.ID_Usuarios = usuarios.ID_Usuarios where usuarios.Mail = ('{}')".format(mail)
         flag = 0
         try:
             self.cursor.execute(sql)
             user = self.cursor.fetchall()
-            print(user)
+            #print(user)
             flag = 1
             return user, flag
 
@@ -58,26 +60,29 @@ class Database():
             print("No hay nada en la tabla")
             return flag
 
-
-    def create_usuarios (self, nombre, apellido, dni, telefono, mail, password):    #ANDA PIOLA
+    def create_usuarios (self, nombre, apellido, dni, telefono, mail, password):    #ANDA PIOLA - devuelve 1 si creo el user, 0 sino
         sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombre, apellido, dni, telefono, mail, password)
-        flag =1
+        flag = 0
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            flag = 1
             return flag 
         except Exception as e:
             print("No se creo el usuario")
-            flag=0
             return flag 
 
-    def create_especie (self, tipo, raza):    #ANDA PIOLA
+    def create_especie (self, tipo, raza):    #ANDA PIOLA - devuelve 1 si creo la especie, 0 sino
         sql="insert into especie (Tipo, Raza) values ('{}', '{}')".format(tipo, raza)
+        flag = 0
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            flag = 1
+            return flag 
         except Exception as e:
             print("No se creo la especie")
+            return flag
 
     def create_roles (self, nombre):    #ANDA PIOLA
         sql = "insert into roles (Nombre_rol) values ('{}')".format(nombre)
@@ -95,9 +100,9 @@ class Database():
         except Exception as e:
             print("No se creo la sede")
 
-    def modificar_password_usuario (self, mail, passwordNew):    #ANDA PIOLA
-        #ANDA PIOLA - devuelve true si hay datos de usuarios, false sino
+    def modificar_password_usuario (self, mail, passwordNew):    #ANDA PIOLA - devuelve 1 si modifico el password, 0 sino
         sql = "SELECT Mail FROM usuarios"
+        flag = 0
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchall()
@@ -109,14 +114,16 @@ class Database():
                         self.connection.commit()
                     except Exception as e:
                         print("No se modifico el password")
-            return True
+            flag = 1
+            return flag 
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return False
+            return flag
 
-    def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, raza, mail):    #ANDA PIOLA
+    def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, raza, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
         sql = "SELECT * FROM especie"
+        flag = 0
         try:
             self.cursor.execute(sql)
             especies = self.cursor.fetchall()
@@ -140,11 +147,15 @@ class Database():
         try:
             self.cursor.execute(sql2)
             self.connection.commit()
+            flag = 1
+            return flag 
         except Exception as e:
             print("No se creo la mascota")
+            return flag 
             
-    def create_empleados (self,nombreEmpleado, apellidoEmpleado, DNIEmpleado, NombreRol):   #ANDA PIOLA
+    def create_empleados (self,nombreEmpleado, apellidoEmpleado, DNIEmpleado, NombreRol):   #ANDA PIOLA - devuelve 1 si creo el empleado, 0 sino
         sql = "SELECT * FROM roles"
+        flag = 0
         try:
             self.cursor.execute(sql)
             roles = self.cursor.fetchall()
@@ -158,11 +169,15 @@ class Database():
         try:
             self.cursor.execute(sql2)
             self.connection.commit()
+            flag = 1
+            return flag 
         except Exception as e:
             print("No se creo el empleado")
+            return flag 
 
-    def create_turno(self, fecha, hora, mailUsuario, mailSede, DNIEmpleado):    #ANDA PIOLA
+    def create_turno(self, fecha, hora, mailUsuario, direcSede, NombreEmpleado, ApellidoEmpleado):    #ANDA PIOLA - devuelve 1 si creo el turno, 0 sino
         sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
+        flag = 0
         try:
             self.cursor.execute(sql1)
             usuarios = self.cursor.fetchall()
@@ -172,23 +187,23 @@ class Database():
         except Exception as e:
             print("No hay nada en la tabla usuarios")
 
-        sql2 = "SELECT ID_Sedes,Mail FROM sedes"
+        sql2 = "SELECT ID_Sedes,Direccion FROM sedes"
         try:
             self.cursor.execute(sql2)
             sedes = self.cursor.fetchall()
             for sede in sedes:
-                if sede[1] == mailSede:
+                if sede[1] == direcSede:
                     idSedes=sede[0]
         except Exception as e:
             print("No hay nada en la tabla sedes")
 
         
-        sql3 = "SELECT ID_Empleados,DNI FROM empleados"
+        sql3 = "SELECT ID_Empleados,Nombre, Apellido FROM empleados"
         try:
             self.cursor.execute(sql3)
             empleados = self.cursor.fetchall()
             for empleado in empleados:
-                if empleado[1] == int(DNIEmpleado):
+                if empleado[1] == NombreEmpleado and empleado[2] == ApellidoEmpleado:
                     idEmple=empleado[0]
         except Exception as e:
             print("No hay nada en la tabla empleados")
@@ -200,14 +215,85 @@ class Database():
         try:
             self.cursor.execute(sql4)
             self.connection.commit()
+            flag = 1
+            return flag 
         except Exception as e:
             print("No se creo el turno")
+            return flag 
     
-    def update_turno(self, fecha, hora):
+    def update_turno(self, fecha, hora, mailUsuario, direcSede, NombreEmpleado, ApellidoEmpleado, idConsulta):#ANDA PIOLA - devuelve 1 si modifico el turno, 0 sino
+        sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
+        flag = 1
+        try:
+            self.cursor.execute(sql1)
+            usuarios = self.cursor.fetchall()
+            for usuario in usuarios:
+                if usuario[1] == mailUsuario:
+                    idUsuario=usuario[0]
+        except Exception as e:
+            print("No hay nada en la tabla usuarios")
 
-    #FUNCIONES QUE FALTAN: MODIFICAR TURNO - 
+        sql2 = "SELECT ID_Sedes,Direccion FROM sedes"
+        try:
+            self.cursor.execute(sql2)
+            sedes = self.cursor.fetchall()
+            for sede in sedes:
+                if sede[1] == direcSede:
+                    idSedes=sede[0]
+        except Exception as e:
+            print("No hay nada en la tabla sedes")
 
-#mydb = Database()
+        
+        sql3 = "SELECT ID_Empleados,Nombre, Apellido FROM empleados"
+        try:
+            self.cursor.execute(sql3)
+            empleados = self.cursor.fetchall()
+            for empleado in empleados:
+                if empleado[1] == NombreEmpleado and empleado[2] == ApellidoEmpleado:
+                    idEmple=empleado[0]
+        except Exception as e:
+            print("No hay nada en la tabla empleados")
+
+        time_data = fecha + ' ' + hora
+        format_data = "%Y-%m-%d %H:%M"
+        date = datetime.strptime(time_data, format_data)
+        sql4 = "update turno set Fecha = ('{}'), ID_Usuarios = ('{}'), ID_Empleados = ('{}') , ID_Sedes = ('{}') where ID_Turno = ('{}')".format(date, idUsuario, idEmple, idSedes, idConsulta)
+        try:
+            self.cursor.execute(sql4)
+            self.connection.commit()
+            flag = 1
+            return flag 
+        except Exception as e:
+            print("No se creo el turno")
+            return flag 
+
+    def traer_consultas_usuario (self, mail): #ANDA PIOLA - devuelve 1 si trae las consultas del user, 0 sino
+        sql = "select ID_Turno, usuarios.Nombre, usuarios.Apellido, Fecha, sedes.Direccion, empleados.Nombre from turno join usuarios on turno.ID_Usuarios = usuarios.ID_Usuarios join sedes on turno.ID_Sedes = sedes.ID_Sedes join empleados on turno.ID_Empleados = empleados.ID_Empleados where usuarios.Mail = ('{}')".format(mail)
+        flag = 0
+        try:
+            self.cursor.execute(sql)
+            user = self.cursor.fetchall()
+            lista = list(user)
+            print(type(lista[0]))
+
+            #lista = user[0][3].strftime("%Y-%m-%d %H:%M")
+            for i in range (len(lista)):
+                lista[i] = list(lista[i])
+                lista[i][3] = user[i][3].strftime("%Y-%m-%d %H:%M")
+            #print(type(user[0][2]))
+            print(lista)
+            print(type(lista[0]))
+            flag = 1
+            return lista, flag
+
+        except Exception as e:
+            print("No hay nada en la tabla")
+            return flag
+
+    #FUNCIONES QUE FALTAN: 
+
+mydb = Database()
+#mydb.traer_consultas_usuario("goleador3@gmail.com")
 #mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 #mydb.all_usuarios()
 #hola = mydb.login("roman@gmail.com", "roman123")
@@ -224,7 +310,7 @@ class Database():
 
 # mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
-#mydb.create_turno("2020-12-28", "15:30", "goleador3@gmail.com", "vet@gmail.com", "32154674")
+#mydb.create_turno("2020-11-5", "17:30", "goleador4@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
 
 # now='5/5/22'
 # print("Before", now)
