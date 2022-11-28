@@ -3,7 +3,7 @@ from django.template import Template, Context, loader
 from django.shortcuts import render, redirect
 from django.contrib import messages, sessions
 
-from Veterinaria.CRUD import Database
+from CRUD import Database
 
 db = Database()
 def login(request):
@@ -58,11 +58,15 @@ def post_ingresoMascota(request):
     else:
         messages.info(request, "Ocurrio un error al registrar a tu mascota, por favor intentalo nuevamente")
 
+def logout(request):
+    request.session.clear()
+    return redirect('login')
+
 def post_register(request):
     email_usr = request.POST.get("email")
     flag, usr = db.traer_usuario(email_usr)
     if flag:  
-        messages.error("El mail ya esta registrado")
+        messages.error(request, "El mail ya esta registrado")
         return redirect('login')
     else:
         nombre_usr = request.POST.get("nombre")
@@ -87,9 +91,9 @@ def post_register(request):
 
 def post_usuario(request):
     email_usr = request.POST.get("email")
-    contrasenia_usuario = request.POST.get("contrasenia")
+    contrasenia_usuario = request.POST.get("contrasenia")    
     if db.login(email_usr, contrasenia_usuario):
-        flag, usuario = db.traer_usuario(email_usr)
+        flag, usuario = db.traer_usuario(email_usr)        
         request.session['nombre'] = usuario[0]
         request.session['apellido'] = usuario[1]
         request.session['DNI'] = usuario[2]
@@ -100,8 +104,8 @@ def post_usuario(request):
         request.session.modified = True        
         return redirect('home')
     else:
-        messages.error("Los datos ingresados son incorrectos o no se corresponden con un usuario registrado")
-        
+        messages.error(request, "Los datos ingresados son incorrectos o no se corresponden con un usuario registrado")
+        return redirect('login')
 
 def inicio(request):
     if 'logueado' not in request.session:
@@ -142,7 +146,7 @@ def historial_consultas(request):
 #Conversion de img a link/path
 #hablar con front sobre:
 ## post_consulta (formulario nueva consulta)
-## post_ingreso_mascota (formulario de nueva mascota
+## post_ingreso_mascota (formulario de nueva mascota)
 ## formulario para cambiar contraseña, boton para el cambio en login y boton logout en home
 # Hablar con front y crud:
 ## post_modificar_consulta (formulario para modificar consulta)

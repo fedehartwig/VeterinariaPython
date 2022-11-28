@@ -20,7 +20,7 @@ from Veterinaria.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', inicio, name = "home"),
+    path('', inicio, name = "home"),
     path('login/', login, name = "login"),
     path('post_usuario/', post_usuario),
     path('post_regsiter/', post_register),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('gestionMascotas/', gestionarMascotas, name = "gestion Mascotas"),
     path('post_ingresoMascota/', post_ingresoMascota),
     path('modificar_consulta/', modificarC),
-    path('post_modificar_consulta/', post_modificar_consulta)
+    path('post_modificar_consulta/', post_modificar_consulta),
+    path('logout/', logout)
 ]
 

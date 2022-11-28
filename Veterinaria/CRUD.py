@@ -7,7 +7,7 @@ class Database():
         self.connection = pymysql.connect(
             host = 'localhost',
             user = 'root',
-            password='1234',
+            password='Tuvieja22$',
             db = 'proyecto_final_vet'
         )
         self.cursor = self.connection.cursor()
@@ -15,74 +15,73 @@ class Database():
 
     def login (self, mail, password):   #ANDA PIOLA - devuelve 1 si esta correcta, 0 sino
         sql= "select Mail, Password from usuarios where Mail = '{}' and Password = '{}' ".format(mail, password)
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchone()
-            flag = 1
-            # print(users[0])
-            # print(users[1])
-            return flag
+            
+            #print(users[0])
+            #print(users[1])
+            return True
         except Exception as e:
             print("No existe ese mail con esa password")
-            return flag
+            return False
 
     def traer_usuario (self, mail):   #ANDA PIOLA - devuelve el user (vacio o no) y un flag. Si flag = 0-> No hay usuarios, si flag=1 devuelve todos los campos del user
         sql = "SELECT Nombre, Apellido, DNI, Telefono, Mail FROM usuarios where Mail = ('{}')".format(mail)
-        flag = 0
         try:
             self.cursor.execute(sql)
             user = self.cursor.fetchone()
-            flag = 1
+            
             # print("Nombre:", user[0])
             # print("Apellido:", user[1])
             # print("DNI:", user[2])
             # print("Telefono:", user[3])
             # print("Mail:", user[4])
             # print (user)
-            return user, flag
+            return True, user
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return False
        
     def traer_mascotas_usuario (self, mail):    #ANDA PIOLA devuelve mascotas (vacio o no) y un flag. Si flag = 0-> No hay mascotas, si flag=1 devuelve todos los campos de mascotas del user
         sql = "SELECT mascotas.Nombre, Edad, Peso, Imagen FROM mascotas join usuarios on mascotas.ID_Usuarios = usuarios.ID_Usuarios where usuarios.Mail = ('{}')".format(mail)
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             user = self.cursor.fetchall()
             #print(user)
-            flag = 1
-            return user, flag
+            
+            return True, user
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return False
 
     def create_usuarios (self, nombre, apellido, dni, telefono, mail, password):    #ANDA PIOLA - devuelve 1 si creo el user, 0 sino
         sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombre, apellido, dni, telefono, mail, password)
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             self.connection.commit()
-            flag = 1
-            return flag 
+            
+            return True 
         except Exception as e:
             print("No se creo el usuario")
-            return flag 
+            return False 
 
     def create_especie (self, tipo, raza):    #ANDA PIOLA - devuelve 1 si creo la especie, 0 sino
         sql="insert into especie (Tipo, Raza) values ('{}', '{}')".format(tipo, raza)
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             self.connection.commit()
-            flag = 1
-            return flag 
+           
+            return True 
         except Exception as e:
             print("No se creo la especie")
-            return flag
+            return False
 
     def create_roles (self, nombre):    #ANDA PIOLA
         sql = "insert into roles (Nombre_rol) values ('{}')".format(nombre)
@@ -102,7 +101,7 @@ class Database():
 
     def modificar_password_usuario (self, mail, passwordNew):    #ANDA PIOLA - devuelve 1 si modifico el password, 0 sino
         sql = "SELECT Mail FROM usuarios"
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchall()
@@ -114,16 +113,16 @@ class Database():
                         self.connection.commit()
                     except Exception as e:
                         print("No se modifico el password")
-            flag = 1
-            return flag 
+            
+            return True 
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return False
 
     def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, raza, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
         sql = "SELECT * FROM especie"
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             especies = self.cursor.fetchall()
@@ -146,16 +145,16 @@ class Database():
         sql2 = "insert into mascotas (Nombre, Edad, Peso, Imagen,ID_Usuarios,ID_Especie) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombreMascota, edadMascota, pesoMascota, imagenMascota,idUsuario,idEspecie)
         try:
             self.cursor.execute(sql2)
-            self.connection.commit()
-            flag = 1
-            return flag 
+            self.connection.commit()            
+            return True
+
         except Exception as e:
             print("No se creo la mascota")
-            return flag 
+            return False 
             
     def create_empleados (self,nombreEmpleado, apellidoEmpleado, DNIEmpleado, NombreRol):   #ANDA PIOLA - devuelve 1 si creo el empleado, 0 sino
         sql = "SELECT * FROM roles"
-        flag = 0
+        
         try:
             self.cursor.execute(sql)
             roles = self.cursor.fetchall()
@@ -169,15 +168,15 @@ class Database():
         try:
             self.cursor.execute(sql2)
             self.connection.commit()
-            flag = 1
-            return flag 
+            
+            return True 
         except Exception as e:
             print("No se creo el empleado")
-            return flag 
+            return False 
 
     def create_turno(self, fecha, hora, mailUsuario, direcSede, NombreEmpleado, ApellidoEmpleado):    #ANDA PIOLA - devuelve 1 si creo el turno, 0 sino
         sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
-        flag = 0
+        
         try:
             self.cursor.execute(sql1)
             usuarios = self.cursor.fetchall()
@@ -215,15 +214,15 @@ class Database():
         try:
             self.cursor.execute(sql4)
             self.connection.commit()
-            flag = 1
-            return flag 
+            
+            return True 
         except Exception as e:
             print("No se creo el turno")
-            return flag 
+            return False 
     
     def update_turno(self, fecha, hora, mailUsuario, direcSede, NombreEmpleado, ApellidoEmpleado, idConsulta):#ANDA PIOLA - devuelve 1 si modifico el turno, 0 sino
         sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
-        flag = 1
+        
         try:
             self.cursor.execute(sql1)
             usuarios = self.cursor.fetchall()
@@ -261,15 +260,15 @@ class Database():
         try:
             self.cursor.execute(sql4)
             self.connection.commit()
-            flag = 1
-            return flag 
+            
+            return True 
         except Exception as e:
             print("No se creo el turno")
-            return flag 
+            return False 
 
     def traer_consultas_usuario (self, mail): #ANDA PIOLA - devuelve 1 si trae las consultas del user, 0 sino
         sql = "select ID_Turno, usuarios.Nombre, usuarios.Apellido, Fecha, sedes.Direccion, empleados.Nombre from turno join usuarios on turno.ID_Usuarios = usuarios.ID_Usuarios join sedes on turno.ID_Sedes = sedes.ID_Sedes join empleados on turno.ID_Empleados = empleados.ID_Empleados where usuarios.Mail = ('{}')".format(mail)
-        flag = 0
+       
         try:
             self.cursor.execute(sql)
             user = self.cursor.fetchall()
@@ -283,12 +282,12 @@ class Database():
             #print(type(user[0][2]))
             print(lista)
             print(type(lista[0]))
-            flag = 1
-            return lista, flag
+            
+            return lista 
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return []
 
     #FUNCIONES QUE FALTAN: 
 
@@ -303,10 +302,10 @@ mydb = Database()
 # mydb.create_roles("Veterinario")
 # mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
-# mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
-# mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
-# mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
-# mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
+mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
+mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
+mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
+mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
 
 # mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
