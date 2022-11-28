@@ -23,15 +23,18 @@ urlpatterns = [
     path('', inicio, name = "home"),
     path('login/', login, name = "login"),
     path('post_usuario/', post_usuario),
-    path('post_regsiter/', post_register),
+    path('post_register/', post_register),
     path('register/', register, name = "registro"),
     path('agendar_consulta/', agendar_consulta, name = "consulta"),
     path('post_consulta/', post_consulta),  
     path('historial_consultas/',historial_consultas, name = "historial"),
     path('gestionMascotas/', gestionarMascotas, name = "gestion Mascotas"),
     path('post_ingresoMascota/', post_ingresoMascota),
-    path('modificar_consulta/', modificarC),
+    path('modificar_consulta/', modificarCons),
     path('post_modificar_consulta/', post_modificar_consulta),
-    path('logout/', logout)
+    path('logout/', logout),
+    path('cambiar_contrasenia/', modificarCont, name = "modificar contra"),
+    path('post_modificar_contrasenia/', post_modificar_contrasenia)
+
 ]
 

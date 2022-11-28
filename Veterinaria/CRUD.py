@@ -20,8 +20,8 @@ class Database():
             self.cursor.execute(sql)
             users = self.cursor.fetchone()
             
-            #print(users[0])
-            #print(users[1])
+            print(users[0])
+            print(users[1])
             return True
         except Exception as e:
             print("No existe ese mail con esa password")

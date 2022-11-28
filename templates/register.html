@@ -9,10 +9,12 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-	<link rel="stylesheet" href="css/style.css">
+	{%load static%}
+	
+	<link rel="stylesheet" href = '{% static "css/style.css" %}' >
 
 	</head>
-	<body class="img js-fullheight" style="background-image: url(images/bg.jpg);">
+	<body class="img js-fullheight">
 	<section class="ftco-section">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -24,7 +26,8 @@
 				<div class="col-md-6 col-lg-4">
 					<div class="login-wrap p-0">
 		      	<h3 class="mb-4 text-center">Crear una cuenta</h3>
-		      	<form action="/post_register/" class="signin-form" method = "post">
+		      	<form action="/post_register/" class="signin-form" method = "POST">
+					{% csrf_token %}
 		      		<div class="form-group">
 		      			<input type="text" class="form-control" placeholder="Nombre" required name="nombre">
 		      		</div>
@@ -44,11 +47,11 @@
 	              <input id="password-field" type="password" class="form-control" placeholder="Password" required>
 	              <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
 	            </div>
-				<p>Si ya tenes una cuenta, <a href="login.html" class="negrito">Logueate</a></p>
-					{% if messages %}
-					<div class="alert alert-danger" role="alert">
-						Ya existe un usuario con alguno de estos datos.
-					</div>
+				<p>Si ya tenes una cuenta, <a href="/login/" class="negrito">Logueate</a></p>
+					{% if hubo_error %}
+						<div class="alert alert-danger" role="alert">
+							Ya existe un usuario con ese mail.
+						</div>
 					{% endif %}
 	            <div class="form-group">
 	            	<button type="submit" class="form-control btn btn-primary submit px-3">Registrarse</button>
@@ -58,10 +61,10 @@
 		</div>
 	</section>
 
-	<script src="js/jquery.min.js"></script>
-  <script src="js/popper.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+	<script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/popper.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/stastic/js/main.js"></script>
 
 	</body>
 </html>

@@ -9,22 +9,44 @@ db = Database()
 def login(request):
     if 'logueado' in request.session:
         return redirect('home')
-    return render(request, "login.html")
+    
+    if 'hubo_error' not in request.session:
+        request.session['hubo_error'] = False
+    request.session['hubo_error_r'] = False
+    request.session.modified = True
+    return render(request, "login.html",{"hubo_error" : request.session['hubo_error']})
+    #return render(request, "login.html")
 
 def register(request):
     if 'logueado' in request.session:
         return redirect('home')
-    return render(request, "register.html")
+    if 'hubo_error_r' not in request.session:
+        request.session['hubo_error_r'] = False
+    request.session['hubo_error'] = False
+    request.session.modified = True
+    return render(request, "register.html", {"hubo_error" : request.session['hubo_error_r']} )
 
 def gestionarMascotas(request):
     if 'logueado' not in request.session:
         return redirect('login')
+    request.session['hubo_error_nc'] = False
+    request.session.modified = True
     return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido']})
 
-def modificarC(request):
+def modificarCons(request):
     if 'logueado' not in request.session:
         return redirect('login')
+    request.session['hubo_error_nc'] = False
+    request.session.modified = True
     return render(request, "modificar_consulta")
+
+def modificarCont(request):
+    if 'logueado' not in request.session:
+        return redirect('login')
+    if 'hubo_error_nc' not in request.session:
+        request.session['hubo_error_nc'] = False
+        request.session.modified = True
+    return render(request, "cambiar_contrasenia.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "hubo_error" : request.session['hubo_error_nc']})
 
 def  post_modificar_consulta(request):
     fecha = request.POST.get("fecha")
@@ -39,6 +61,22 @@ def  post_modificar_consulta(request):
         return redirect('home')
     messages.info(request, "Hubo un error al modificar su consulta")
     return redirect('historial')
+
+def post_modificar_contrasenia(request):
+    contraseniaActual = request.POST.get("actual_password")
+    contraseniaNueva = request.POST.get("new_password")
+    contraseniaNueva2 = request.POST.get("new_password2")
+    if contraseniaActual != request.session['pass'] or contraseniaNueva != contraseniaNueva2:
+        request.session['hubo_error_nc'] = True
+        request.session.modified = True
+        return redirect('modificar contra')
+    elif db.modificar_password_usuario(request.session['email'], contraseniaNueva):
+        messages.info(request, "La contraseña fue modificada con exito!")
+        return redirect('home')
+    else:
+        request.session['hubo_error_nc'] = True
+        request.session.modified = True
+        return redirect('modificar contra')
 
 def post_ingresoMascota(request):
     nombreM = request.POST.get("nombre")
@@ -66,8 +104,10 @@ def post_register(request):
     email_usr = request.POST.get("email")
     flag, usr = db.traer_usuario(email_usr)
     if flag:  
-        messages.error(request, "El mail ya esta registrado")
-        return redirect('login')
+        #messages.error(request, "El mail ya esta registrado")
+        request.session['hubo_error_r'] = True
+        request.session.modified = True
+        return redirect('registro')
     else:
         nombre_usr = request.POST.get("nombre")
         apellido_usr = request.POST.get("apellido")
@@ -101,15 +141,20 @@ def post_usuario(request):
         request.session['pass'] = contrasenia_usuario
         request.session['email'] = email_usr
         request.session['logueado'] = True
+        request.session['hubo_error'] = False
         request.session.modified = True        
         return redirect('home')
     else:
-        messages.error(request, "Los datos ingresados son incorrectos o no se corresponden con un usuario registrado")
+        #messages.error(request, "Los datos ingresados son incorrectos o no se corresponden con un usuario registrado")
+        request.session['hubo_error'] = True
+        request.session.modified = True
         return redirect('login')
 
 def inicio(request):
     if 'logueado' not in request.session:
         return redirect('login')
+    request.session['hubo_error_nc'] = False
+    request.session.modified = True
     return render(request, "index.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
     
         
@@ -117,6 +162,8 @@ def inicio(request):
 def agendar_consulta(request):
     if 'logueado' not in request.session:
         return redirect('login')
+    request.session['hubo_error_nc'] = False
+    request.session.modified = True
     return render(request, "ingreso_consulta.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})  
         
 
@@ -138,6 +185,8 @@ def post_consulta(request):
 def historial_consultas(request):
     if 'logueado' not in request.session:
         return redirect('login')
+    request.session['hubo_error_nc'] = False
+    request.session.modified = True
     return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])}) #ver como implementar la lista de consultas 
     
         
@@ -145,8 +194,7 @@ def historial_consultas(request):
 #Control de imagegn con csv
 #Conversion de img a link/path
 #hablar con front sobre:
-## post_consulta (formulario nueva consulta)
-## post_ingreso_mascota (formulario de nueva mascota)
-## formulario para cambiar contraseña, boton para el cambio en login y boton logout en home
+## post_consulta (formulario nueva consulta) (todavia hay q ver el tema e los nombres de medicos)
+## post_ingreso_mascota (formulario de nueva mascota) (todavia hay q ver lo de la raza)
 # Hablar con front y crud:
-## post_modificar_consulta (formulario para modificar consulta)
+## post_modificar_consulta (formulario para modificar consulta) (todavia hay q ver el tema e los nombres de medicos y como mandar id) (integrar al home)
