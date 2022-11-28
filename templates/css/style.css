@@ -8450,3 +8450,15 @@ textarea.form-control {
           white-space: nowrap;
           -webkit-overflow-scrolling: touch;
         }
+        .negrito{
+          color: #1b1e21;
+         
+        }
+        .negrito{
+          color: #002752;
+        }
+        .signin-form a:hover{
+          text-decoration: underline;
+      }
+      
+        

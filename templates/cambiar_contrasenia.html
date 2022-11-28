@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>Enviar consulta</title>
+  	<title>Cambiar contraseña</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -25,10 +25,7 @@
           </li> 
           <li class="nav-item">
             <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="login.html">Cerrar sesión</a></form>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="cambiar_contrasenia">Cambiar contraseña</a>
-          </li>         
+          </li>        
         </ul>
         <div class="navbar-brand">
           <a>Veterinaria: Patitas Por el Mundo</a>
@@ -43,35 +40,29 @@
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
-                      <h3 class="mb-4 text-center">Solicitar una consulta médica</h3>
+                      <h3 class="mb-4 text-center">Llene los datos</h3>
                       <form action="#" class="signin-form">
                           <div class="form-group">
-                            <a>Fecha y hora</a>
-                              <input type="datetime-local" class="form-control" name="fecha" required>
+                            <a>Contraseña actual</a>
+                            <input id="password-field" type="password" class="form-control" placeholder="---" name="actual_password" required>
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                           </div>
-                    <div class="form-group">
-                        <label for="cars">Seleccione un médico:</label>
-                        <select class="form-select" aria-label="Default select example" name="medico" id="id_medico">
-                            <option selected>---</option>
-                            <option value="1">Favaloro</option>
-                            <option value="2">Dr. Pena </option>
-                            <option value="3">Sigmund Freud</option>
-                            <option value="3">Ignaz Semmelweis</option>
-                          </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="cars">Seleccione una sede:</label>
-                        <select class="form-select" aria-label="Default select example" name="sede" id="id_sede">
-                            <option selected>---</option>
-                            <option value="1">La matanza</option>
-                            <option value="2">Parque Patricios</option>
-                            <option value="3">Lomas de Zamora</option>
-                            <option value="3">Villa fiorito</option>
-                          </select>
-                    </div>
-                    <div class="form-group">
+                          <div class="form-group">
+                            <a>Contraseña nueva</a>
+                            <input id="password-field" type="password" class="form-control" placeholder="---" name="new_password" required>
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                          </div>
+                          <div class="form-group">
+                            <a>Vuelva a ingresar la contraseña nueva</a>
+                            <input id="password-field" type="password" class="form-control" placeholder="---" name="new_password2" required>
+                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                          </div>
+                          {% if messages %}
+					        <div class="alert alert-danger" role="alert">
+						    La contraseña actual es incorrecta o las contraseñas no coninciden
+                            </div>
+                          {% endif %}
                         <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
-                    </div>
                   </form>
                 </div>
             </div>
