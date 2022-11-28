@@ -28,5 +28,9 @@ urlpatterns = [
     path('agendar_consulta/', agendar_consulta, name = "consulta"),
     path('post_consulta/', post_consulta),  
     path('historial_consultas/',historial_consultas, name = "historial"),
+    path('gestionMascotas/', gestionarMascotas, name = "gestion Mascotas"),
+    path('post_ingresoMascota/', post_ingresoMascota),
+    path('modificar_consulta/', modificarC),
+    path('post_modificar_consulta/', post_modificar_consulta)
 ]
 
