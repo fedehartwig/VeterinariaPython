@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-  	<title>Enviar consulta</title>
+  	<title>Modificar consulta</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -29,21 +29,17 @@
                 <div class="row justify-content-center">
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
-                      <h3 class="mb-4 text-center">Solicitar una consulta médica</h3>
-                      <form action="/post_consulta/" class="signin-form" method = "post">
+                      <h3 class="mb-4 text-center">Modificar consulta</h3>
+                      <form action="#" class="signin-form">
                           <div class="form-group">
                             <a>Fecha y hora</a>
                               <input type="datetime-local" class="form-control" name="fecha" required>
                           </div>
                     <div class="form-group">
-                        <label for="cars">Seleccione un médico:</label>
-                        <select class="form-select" aria-label="Default select example" name="medico" id="id_medico">
-                            <option selected>---</option>
-                            <option value="1">Favaloro</option>
-                            <option value="2">Dr. Pena </option>
-                            <option value="3">Sigmund Freud</option>
-                            <option value="3">Ignaz Semmelweis</option>
-                          </select>
+                        <label for="cars">Nombre del médico:</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                        <label for="cars">Apellido del médico:</label>
+                        <input type="text" class="form-control" name="apellido" required>
                     </div>
                     <div class="form-group">
                         <label for="cars">Seleccione una sede:</label>

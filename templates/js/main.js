@@ -24,3 +24,7 @@
 	});
 
 })(jQuery);
+
+function ola(){
+	alert("asdasd")
+}
