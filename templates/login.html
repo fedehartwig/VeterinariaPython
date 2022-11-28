@@ -9,8 +9,8 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-	<link rel="stylesheet" href="css/style.css">
-
+	<link rel="stylesheet" href = '{% Static "css/style.css" %}' >
+	{%load Static%}
 	</head>
 	<body class="img js-fullheight" style="background-image: url(images/bg.jpg);">
 	<section class="ftco-section">
@@ -25,6 +25,7 @@
 					<div class="login-wrap p-0">
 		      	<h3 class="mb-4 text-center">Tenes una cuenta?</h3>
 		      	<form action="/post_usuario/" class="signin-form" method = "POST">
+					{% csrf_token %}
 		      		<div class="form-group">
 		      			<input type="text" class="form-control" placeholder="email" name="email" required>
 		      		</div>
