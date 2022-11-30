@@ -9,16 +9,26 @@
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-	<link rel="stylesheet" href="css/style_historial.css">
+	{%load static%}
+	
+    <link rel="stylesheet" href = '{% static "css/style_historial.css" %}' >
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   	<div class="container-fluid">
-      <a>"Nombre de usuario"</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+		<ul class="navbar-nav me-auto mb-2 mb-md-0">
+			<li class="nav-item">
+			  <a class="nav-link active" aria-current="page">{{nombre}} {{apellido}}</a>
+			</li> 
+			<li class="nav-item">
+			  <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="login.html">Cerrar sesión</a></form>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="/cambiar_contrasenia/">Cambiar contraseña</a>
+			  </li>         
+		  </ul>
       <div class="navbar-brand">
         <a>Veterinaria: Patitas Por el Mundo</a>
       </div>
+	  
     </div>
   </nav>
 	</head>
@@ -37,7 +47,6 @@
 						  <thead class="thead-dark">
 						    <tr>
 						      <th>Número de consulta</th>
-						      <th>Dueño</th>
 						      <th>Fecha</th>
 							  <th>Sede</th>
 							  <th>Médico</th>
@@ -47,49 +56,45 @@
 						  <tbody>
 						    <tr class="alert" role="alert">
 						      <th scope="row">001</th>
-						      <td>Mark</td>
 						      <td>11/22/2023</td>
 							  <td>Hospital Pena</td>
 							  <td>Dr. Mengueche</td>
 						      <td>
-						      	<a href="#" class="close" data-dismiss="alert" aria-label="Close">
-				            	<span aria-hidden="true"><i class="fa fa-close"></i></span>
+								 <a href="#" class="update"> 
+				            	 <span><i>Modificar Consulta</i></span>
 				          		</a>
 				        	  </td>
 						    </tr>
 							<tr class="alert" role="alert">
 								<th scope="row">001</th>
-								<td>Mark</td>
 								<td>11/22/2023</td>
 								<td>Hospital Pena</td>
-								<td>Dr. Mengueche</td>
+								<td>Dr. Favaloro</td>
 								<td>
-									<a href="#" class="close" data-dismiss="alert" aria-label="Close">
-								  <span aria-hidden="true"><i class="fa fa-close"></i></span>
+									<a href="#" class="update"> 
+									<span><i>Modificar Consulta</i></span>
 									</a>
 								</td>
 							  </tr>
 							  <tr class="alert" role="alert">
 								<th scope="row">001</th>
-								<td>Mark</td>
 								<td>11/22/2023</td>
 								<td>Hospital Pena</td>
-								<td>Dr. Mengueche</td>
+								<td>Dr. Fvaloro</td>
 								<td>
-									<a href="#" class="close" data-dismiss="alert" aria-label="Close">
-								  <span aria-hidden="true"><i class="fa fa-close"></i></span>
+									<a href="#" class="update"> 
+									<span><i>Modificar Consulta</i></span>
 									</a>
 								</td>
 							  </tr>
 							  <tr class="alert" role="alert">
 								<th scope="row">001</th>
-								<td>Mark</td>
 								<td>11/22/2023</td>
 								<td>Hospital Pena</td>
-								<td>Dr. Mengueche</td>
+								<td>Dr. Favaloro</td>
 								<td>
-									<a href="#" class="close" data-dismiss="alert" aria-label="Close">
-								  <span aria-hidden="true"><i class="fa fa-close"></i></span>
+									<a href="#" class="update"> 
+									<span><i>Modificar Consulta</i></span>
 									</a>
 								</td>
 							  </tr>
@@ -101,10 +106,10 @@
 		</div>
 	</section>
 
-	<script src="js/jquery.min.js"></script>
-  <script src="js/popper.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/popper.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/main.js"></script>
   <footer class="pie">
 	<div class="espacio">
 	  <a>Kevin Ezequiel Lorenzo</a><br>
