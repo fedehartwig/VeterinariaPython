@@ -122,15 +122,20 @@ class Database():
 
     def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, raza, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
         sql = "SELECT * FROM especie"
-        
+        print("miraraca")
         try:
             self.cursor.execute(sql)
             especies = self.cursor.fetchall()
             for especie in especies:
-                if especie[1] == tipo and especie[2] == raza:
+                print(especie[1])
+                print(tipo)
+                if especie[1] == tipo:
                     idEspecie=especie[0]
+                    print("idEspecie: ", idEspecie)
         except Exception as e:
             print("No hay nada en la tabla")
+            
+        
         
         sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
         try:
@@ -141,6 +146,7 @@ class Database():
                     idUsuario=usuario[0]
         except Exception as e:
             print("No hay nada en la tabla")
+            
 
         sql2 = "insert into mascotas (Nombre, Edad, Peso, Imagen,ID_Usuarios,ID_Especie) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(nombreMascota, edadMascota, pesoMascota, imagenMascota,idUsuario,idEspecie)
         try:
@@ -296,20 +302,20 @@ mydb = Database()
 #mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 #mydb.all_usuarios()
 #hola = mydb.login("roman@gmail.com", "roman123")
-# hola = mydb.create_especie("perro","bulldog")
-#mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","caniche","goleador3@gmail.com")
+hola = mydb.create_especie("perro","bulldog")
+mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","caniche","goleador3@gmail.com")
 
-# mydb.create_roles("Veterinario")
-# mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
+mydb.create_roles("Veterinario")
+mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
 mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
 mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
 mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
 mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
 
-# mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
+mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
-#mydb.create_turno("2020-11-5", "17:30", "goleador4@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
+mydb.create_turno("2020-11-5", "17:30", "goleador4@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
 
 # now='5/5/22'
 # print("Before", now)
@@ -317,6 +323,6 @@ mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca
 # print("After", now)
 # cursor.execute("INSERT INTO table (name, id, datecolumn) VALUES (%s, %s, %s)",(name, 4,now))
 
-#hola = mydb.traer_usuario("goleador3@gmail.com")
+#hola = mydb.traer_consultas_usuario("goleador4@gmail.com")
 #hola = mydb.traer_mascotas_usuario("goleador3@gmail.com")
 #print(hola[0][0][0])

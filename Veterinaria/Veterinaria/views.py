@@ -33,12 +33,13 @@ def gestionarMascotas(request):
     request.session.modified = True
     return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido']})
 
-def modificarCons(request):
+def modificarCons(request, idConsulta): #modificar front para q aparezca la lista de medicos como en agendar consulta
     if 'logueado' not in request.session:
         return redirect('login')
     request.session['hubo_error_nc'] = False
+    request.session['idCons'] = idConsulta
     request.session.modified = True
-    return render(request, "modificar_consulta")
+    return render(request, "modificar_consulta.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido']})
 
 def modificarCont(request):
     if 'logueado' not in request.session:
@@ -55,7 +56,9 @@ def  post_modificar_consulta(request):
     nombreM = request.POST.get("nombre")
     apellidoM = request.POST.get("apellido")
     sede = request.POST.get("sede")
-    id = None #ver de donde sacar id y los datos de la consulta original
+    id = request.session['idCons']
+    request.session.pop('idCons')
+    request.session.modified = True
     if db.update_turno(fecha, hora, request.session['email'], sede, nombreM, apellidoM, id):
         messages.info(request, "su consulta se modifico satisfactoriamente!")
         return redirect('home')
@@ -90,7 +93,8 @@ def post_ingresoMascota(request):
     #corresponda con la imagen, luego convertir imagen a link/path
     
     linkimg = None #cambiar por conversion a link/path
-    if db.create_mascota(nombreM, edadM, peso, linkimg, especie, raza, request.session['email']):
+    print("especie:", especie)
+    if db.create_mascota(nombreM, edadM, peso, img, especie, raza, request.session['email']):
         messages.info(request, "Tu mascota se guardo satisfactoriamente!")
         return redirect('home')
     else:
@@ -101,9 +105,9 @@ def logout(request):
     return redirect('login')
 
 def post_register(request):
-    email_usr = request.POST.get("email")
-    flag, usr = db.traer_usuario(email_usr)
-    if flag:  
+    email_usr = request.POST.get("email")        
+    flag, usr = db.traer_usuario(email_usr)    
+    if usr != None:  
         #messages.error(request, "El mail ya esta registrado")
         request.session['hubo_error_r'] = True
         request.session.modified = True
@@ -113,8 +117,8 @@ def post_register(request):
         apellido_usr = request.POST.get("apellido")
         dni_usr = request.POST.get("dni")
         telefono_usr = request.POST.get("telefono")
-        contrasenia_usr = request.POST.get("password")
-        if db.create_usuarios(nombre_usr, apellido_usr, dni_usr, telefono_usr, contrasenia_usr):
+        contrasenia_usr = request.POST.get("contra")        
+        if db.create_usuarios(nombre_usr, apellido_usr, dni_usr, telefono_usr, email_usr, contrasenia_usr):
             request.session['nombre'] = nombre_usr
             request.session['apellido'] = apellido_usr
             request.session['DNI'] = dni_usr
@@ -164,7 +168,8 @@ def agendar_consulta(request):
         return redirect('login')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    return render(request, "ingreso_consulta.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})  
+    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos(), "listaSedes" : db.listaSedes()}
+    return render(request, "ingreso_consulta.html", contexto)  
         
 
 
@@ -187,14 +192,19 @@ def historial_consultas(request):
         return redirect('login')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])}) #ver como implementar la lista de consultas 
+    return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])[1]}) #ver como implementar la lista de consultas 
     
         
 #TO DO
 #Control de imagegn con csv
 #Conversion de img a link/path
 #hablar con front sobre:
+
 ## post_consulta (formulario nueva consulta) (todavia hay q ver el tema e los nombres de medicos)
-## post_ingreso_mascota (formulario de nueva mascota) (todavia hay q ver lo de la raza)
+## post_ingreso_mascota (formulario de nueva mascota) (todavia hay q ver lo de la raza) 
 # Hablar con front y crud:
 ## post_modificar_consulta (formulario para modificar consulta) (todavia hay q ver el tema e los nombres de medicos y como mandar id) (integrar al home)
+######cambiar los values en los forms por texto ya que el id puede variar
+######cambiar como ingresar nombre de medico en modificar consulta a una seleccion como en agendar
+###### base de datos metodos q me traigan sedes y medicos 
+###### separar especie de raza en base de datos (o directamente eliminar raza y fue)

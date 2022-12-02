@@ -30,7 +30,7 @@ urlpatterns = [
     path('historial_consultas/',historial_consultas, name = "historial"),
     path('gestionMascotas/', gestionarMascotas, name = "gestion Mascotas"),
     path('post_ingresoMascota/', post_ingresoMascota),
-    path('modificar_consulta/', modificarCons),
+    path('modificar_consulta/<int:idConsulta>/', modificarCons),
     path('post_modificar_consulta/', post_modificar_consulta),
     path('logout/', logout),
     path('cambiar_contrasenia/', modificarCont, name = "modificar contra"),
