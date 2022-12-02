@@ -40,11 +40,11 @@ class Database():
             # print("Telefono:", user[3])
             # print("Mail:", user[4])
             # print (user)
-            return user, flag
+            return flag, user
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return flag, user
        
     def traer_mascotas_usuario (self, mail):    #ANDA PIOLA devuelve mascotas (vacio o no) y un flag. Si flag = 0-> No hay mascotas, si flag=1 devuelve todos los campos de mascotas del user
         sql = "SELECT mascotas.Nombre, Edad, Peso, Imagen FROM mascotas join usuarios on mascotas.ID_Usuarios = usuarios.ID_Usuarios where usuarios.Mail = ('{}')".format(mail)
@@ -72,8 +72,8 @@ class Database():
             print("No se creo el usuario")
             return flag 
 
-    def create_especie (self, tipo, raza):    #ANDA PIOLA - devuelve 1 si creo la especie, 0 sino
-        sql="insert into especie (Tipo, Raza) values ('{}', '{}')".format(tipo, raza)
+    def create_especie (self, tipo, descripcion):    #ANDA PIOLA - devuelve 1 si creo la especie, 0 sino
+        sql="insert into especie (Tipo, Descripcion) values ('{}', '{}')".format(tipo, descripcion)
         flag = 0
         try:
             self.cursor.execute(sql)
@@ -121,14 +121,14 @@ class Database():
             print("No hay nada en la tabla")
             return flag
 
-    def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, raza, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
+    def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
         sql = "SELECT * FROM especie"
         flag = 0
         try:
             self.cursor.execute(sql)
             especies = self.cursor.fetchall()
             for especie in especies:
-                if especie[1] == tipo and especie[2] == raza:
+                if especie[1] == tipo:
                     idEspecie=especie[0]
         except Exception as e:
             print("No hay nada en la tabla")
@@ -284,7 +284,7 @@ class Database():
             print(lista)
             print(type(lista[0]))
             flag = 1
-            return lista, flag
+            return flag, lista
 
         except Exception as e:
             print("No hay nada en la tabla")
@@ -318,6 +318,16 @@ mydb = Database()
 # print("After", now)
 # cursor.execute("INSERT INTO table (name, id, datecolumn) VALUES (%s, %s, %s)",(name, 4,now))
 
-#hola = mydb.traer_usuario("goleador3@gmail.com")
+flag, hola = mydb.traer_usuario("goleador3@gmail.com")
+
 #hola = mydb.traer_mascotas_usuario("goleador3@gmail.com")
-#print(hola[0][0][0])
+print(hola[0])
+
+hola = ("Nombre:", hola[0]), ("Apellido:", hola[1]), ("DNI:", hola[2]), ("Telefono:", hola[3]), ("Mail:", hola[4])
+hola = hola.__dict__
+print (type(hola))
+'''dict(map(reversed,hola))
+print (type(hola))
+print(hola)'''
+
+#CREAR ESPECIE - CREAR TURNO - MODIFICAR TURNO
