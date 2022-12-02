@@ -6,23 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-
+	<link rel="stylesheet" href="css/style_historial.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-	{%load static%}
 	
-    <link rel="stylesheet" href = '{% static "css/style_historial.css" %}' >
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   	<div class="container-fluid">
 		<ul class="navbar-nav me-auto mb-2 mb-md-0">
 			<li class="nav-item">
-			  <a class="nav-link active" aria-current="page">{{nombre}} {{apellido}}</a>
+			  <a class="nav-link active" aria-current="page">Nombre de usuario</a>
 			</li> 
 			<li class="nav-item">
 			  <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="login.html">Cerrar sesión</a></form>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="/cambiar_contrasenia/">Cambiar contraseña</a>
+				<a class="nav-link active" aria-current="page" href="cambiar_contrasenia">Cambiar contraseña</a>
 			  </li>         
 		  </ul>
       <div class="navbar-brand">
@@ -106,10 +104,10 @@
 		</div>
 	</section>
 
-  <script src="/static/js/jquery.min.js"></script>
-  <script src="/static/js/popper.js"></script>
-  <script src="/static/js/bootstrap.min.js"></script>
-  <script src="/static/js/main.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/main.js"></script>
   <footer class="pie">
 	<div class="espacio">
 	  <a>Kevin Ezequiel Lorenzo</a><br>
@@ -121,4 +119,3 @@
   </footer>
 	</body>
 </html>
-
