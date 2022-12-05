@@ -49,22 +49,28 @@
                             <a>Fecha y hora</a>
                               <input type="datetime-local" class="form-control" name="fecha" required>
                           </div>
-                    <div class="form-group">
-                        <label for="cars">Nombre del médico:</label>
-                        <input type="text" class="form-control" name="nombre" required>
-                        <label for="cars">Apellido del médico:</label>
-                        <input type="text" class="form-control" name="apellido" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="cars">Seleccione una sede:</label>
-                        <select class="form-select" aria-label="Default select example" name="sede" id="id_sede">
-                            <option selected>---</option>
-                            <option value="1">La matanza</option>
-                            <option value="2">Parque Patricios</option>
-                            <option value="3">Lomas de Zamora</option>
-                            <option value="3">Villa fiorito</option>
-                          </select>
-                    </div>
+                          <div class="form-group">
+                            <label for="cars">Seleccione un médico:</label>
+                            <select class="form-select" aria-label="Default select example" name="medico" id="id_medico">
+                                <option selected>---</option>
+                                {% if listaMedicos %}
+                                  {% for medico in listaMedicos%}
+                                <option value="{{medico.1}} {{medico.2}}">{{ medico.1 }} {{ medico.2 }}</option>
+                                  {% endfor%}
+                                {% endif %}  
+                              </select>
+                                </div>
+                        <div class="form-group">
+                            <label for="cars">Seleccione una sede:</label>
+                            <select class="form-select" aria-label="Default select example" name="sede" id="id_sede">
+                                <option selected>---</option>
+                                {% if listaSedes %}
+                                  {% for sede in listaSedes%}
+                                <option value="{{sede.0}}">{{ sede.0 }}</option>
+                                  {% endfor%}
+                                {% endif %}
+                              </select>
+                        </div>
                     <div class="form-group">
                         <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
                     </div>

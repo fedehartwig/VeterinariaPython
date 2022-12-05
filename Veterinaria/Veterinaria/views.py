@@ -31,7 +31,7 @@ def gestionarMascotas(request):
         return redirect('login')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido']})
+    return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido'],"listaEspecies":db.traer_Especies()[1]})
 
 def modificarCons(request, idConsulta): #modificar front para q aparezca la lista de medicos como en agendar consulta
     if 'logueado' not in request.session:
@@ -87,19 +87,21 @@ def post_ingresoMascota(request):
     peso = request.POST.get("peso")
     img = request.POST.get("img")
     especie = request.POST.get("especie")
-    raza = request.POST.get("raza") #agregar raza al formulario
+    descripcion = request.POST.get("descripcion") #agregar raza al formulario
 
     #implementar control con reconocimiento de imagenes para ver q la especie se
     #corresponda con la imagen, luego convertir imagen a link/path
     
     linkimg = None #cambiar por conversion a link/path
-    print("especie:", especie)
-    if db.create_mascota(nombreM, edadM, peso, img, especie, raza, request.session['email']):
+
+    if db.create_mascota(nombreM, edadM, peso, img, especie, request.session['email']):
         messages.info(request, "Tu mascota se guardo satisfactoriamente!")
         return redirect('home')
     else:
         messages.info(request, "Ocurrio un error al registrar a tu mascota, por favor intentalo nuevamente")
-
+        #return redirect('home')
+        print("no entra acá")
+        
 def logout(request):
     request.session.clear()
     return redirect('login')
@@ -168,18 +170,19 @@ def agendar_consulta(request):
         return redirect('login')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos(), "listaSedes" : db.listaSedes()}
+    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
     return render(request, "ingreso_consulta.html", contexto)  
         
 
 
 def post_consulta(request):
+    aux = (request.POST.get("medico")).split(" ")
     email_usr = request.session['email']
     fecha = request.POST.get("fecha")
     hora = fecha.split('T')[1]
     fecha = fecha.split('T')[0]
-    nombreM = request.POST.get("nombre") #cambiar la carga para ingresar nombre y apellido del medico 
-    apellidoM = request.POST.get("apellido") 
+    nombreM = aux[0] #cambiar la carga para ingresar nombre y apellido del medico 
+    apellidoM = aux[1]
     sede = request.POST.get("sede")
     if db.create_turno(fecha, hora, email_usr, sede, nombreM, apellidoM):
         messages.info(request, "La consulta se agendo correctamente")
