@@ -7,7 +7,7 @@ class Database():
         self.connection = pymysql.connect(
             host = 'localhost',
             user = 'root',
-            password='04112001',
+            password='Tuvieja22$',
             db = 'proyecto_final_vet'
         )
         self.cursor = self.connection.cursor()
@@ -19,7 +19,8 @@ class Database():
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchone()
-            flag = 1
+            if users != None:
+                flag = 1
             # print(users[0])
             # print(users[1])
             return flag
@@ -68,7 +69,7 @@ class Database():
             self.connection.commit()
             flag = 1
             return flag 
-        except Exception as e:
+        except Exception as e:           
             print("No se creo el usuario")
             return flag 
 
@@ -124,6 +125,8 @@ class Database():
     def create_mascota (self, nombreMascota, edadMascota, pesoMascota, imagenMascota, tipo, mail):    #ANDA PIOLA - devuelve 1 si creo la mascota, 0 sino
         sql = "SELECT * FROM especie"
         flag = 0
+        idUsuario = None
+        idEspecie = None
         try:
             self.cursor.execute(sql)
             especies = self.cursor.fetchall()
@@ -131,8 +134,8 @@ class Database():
                 if especie[1] == tipo:
                     idEspecie=especie[0]
         except Exception as e:
-            print("No hay nada en la tabla 1")
-        
+            print("No hay nada en la tabla 1")        
+
         sql1 = "SELECT ID_Usuarios,Mail FROM usuarios"
         try:
             self.cursor.execute(sql1)
@@ -288,7 +291,7 @@ class Database():
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return flag, []
 
     def listaMedicos (self):   
         sql = "SELECT * from empleados"
@@ -339,15 +342,15 @@ mydb = Database()
 #mydb.all_usuarios()
 #hola = mydb.login("roman@gmail.com", "roman123")
 #hola = mydb.create_especie("perro","bulldog")
-mydb.create_mascota("simon","1","2","fotora","perro","goleador4@gmail.com")
+#mydb.create_mascota("simon","1","2","fotora","perro","goleador4@gmail.com")
 
 #mydb.create_roles("Veterinario")
 #mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
-# mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
+#mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
 #mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
-# mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
-# mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
+#mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
+#mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
 
 #mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 

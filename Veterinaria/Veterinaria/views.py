@@ -39,7 +39,8 @@ def modificarCons(request, idConsulta): #modificar front para q aparezca la list
     request.session['hubo_error_nc'] = False
     request.session['idCons'] = idConsulta
     request.session.modified = True
-    return render(request, "modificar_consulta.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido']})
+    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
+    return render(request, "modificar_consulta.html", contexto)
 
 def modificarCont(request):
     if 'logueado' not in request.session:
@@ -53,9 +54,10 @@ def  post_modificar_consulta(request):
     fecha = request.POST.get("fecha")
     hora = fecha.split('T')[1]
     fecha = fecha.split('T')[0]
-    nombreM = request.POST.get("nombre")
-    apellidoM = request.POST.get("apellido")
-    sede = request.POST.get("sede")
+    medico= request.POST.get('medico')
+    nombreM = medico.split(' ')[0]
+    apellidoM = medico.split(' ')[1]
+    sede = request.POST.get('sede')
     id = request.session['idCons']
     request.session.pop('idCons')
     request.session.modified = True
@@ -99,8 +101,8 @@ def post_ingresoMascota(request):
         return redirect('home')
     else:
         messages.info(request, "Ocurrio un error al registrar a tu mascota, por favor intentalo nuevamente")
-        #return redirect('home')
-        print("no entra acá")
+        return redirect('historial')
+        
         
 def logout(request):
     request.session.clear()
@@ -119,7 +121,7 @@ def post_register(request):
         apellido_usr = request.POST.get("apellido")
         dni_usr = request.POST.get("dni")
         telefono_usr = request.POST.get("telefono")
-        contrasenia_usr = request.POST.get("contra")        
+        contrasenia_usr = request.POST.get("contra")
         if db.create_usuarios(nombre_usr, apellido_usr, dni_usr, telefono_usr, email_usr, contrasenia_usr):
             request.session['nombre'] = nombre_usr
             request.session['apellido'] = apellido_usr
@@ -133,11 +135,15 @@ def post_register(request):
             return redirect('home')
         else:
             messages.info(request, "Hubo un error en el registro, por favor intente nuevamente")
+            return redirect('registro')
         
 
 def post_usuario(request):
     email_usr = request.POST.get("email")
-    contrasenia_usuario = request.POST.get("contrasenia")    
+    contrasenia_usuario = request.POST.get("contrasenia")
+    print("Email:", email_usr)
+    print("contra:", contrasenia_usuario)
+    print(db.login(email_usr, contrasenia_usuario))    
     if db.login(email_usr, contrasenia_usuario):
         flag, usuario = db.traer_usuario(email_usr)        
         request.session['nombre'] = usuario[0]
@@ -194,7 +200,7 @@ def historial_consultas(request):
     if 'logueado' not in request.session:
         return redirect('login')
     request.session['hubo_error_nc'] = False
-    request.session.modified = True
+    request.session.modified = True    
     return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])[1]}) #ver como implementar la lista de consultas 
     
         
