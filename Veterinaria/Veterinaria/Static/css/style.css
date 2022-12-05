@@ -57,8 +57,10 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff; }
-
+  background-color: #fff; 
+  background-image: url('/static/images/bg.jpg');
+}
+  
 [tabindex="-1"]:focus {
   outline: 0 !important; }
 

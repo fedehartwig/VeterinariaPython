@@ -23,7 +23,9 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="css/style_index.css">
+    {%load static%}
+	
+    <link rel="stylesheet" href = '{% static "css/style_index.css" %}' >
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -37,10 +39,10 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page">Nombre de usuario</a>
+            <a class="nav-link active" aria-current="page">{{nombre}} {{apellido}}</a>
           </li> 
           <li class="nav-item">
-            <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="login.html">Cerrar sesión</a></form>
+            <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="/logout/">Cerrar sesión</a></form>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="cambiar_contrasenia">Cambiar contraseña</a>
@@ -60,38 +62,37 @@
     <div class="row">
       <div class="col">
         <div class="card" style="width: 18rem;">
-        <img src="images/insertar_consulta.png" class="card-img-top" alt="...">
+        <img src='{% static "images/insertar_consulta.png" %}' class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Ingresar una nueva consulta</h5>
           <p class="card-text">Inserte los datos de su mascota para coordinar un turno en la veterinaria</p>
-          <a href="#" class="btn btn-primary">Ingresar</a>
+          <a href="/agendar_consulta/" class="btn btn-primary">Ingresar</a>
         </div>
       </div>
     </div>
     <div class="col">
       <div class="card" style="width: 18rem;">
-        <img src="images/listado_consulta.png" class="card-img-top" alt="...">
+        <img src='{% static "images/listado_consulta.png" %}' class="card-img-top" alt="...">
         <div class="card-body">
          <h5 class="card-title">Consultar historial de consultas</h5>
           <p class="card-text">Observe todas las consultas que realizó sobre su mascota con todos los datos a fin</p>
-         <a href="#" class="btn btn-primary">Consultar</a>
+         <a href="/historial_consultas/" class="btn btn-primary">Consultar</a>
         </div>
       </div>
     </div>
     <div class="col">
       <div class="card" style="width: 18rem;">
-        <img src="images/mascota.png" class="card-img-top" alt="...">
+        <img src='{% static "images/mascota.png" %}' class="card-img-top" alt="...">
         <div class="card-body">
          <h5 class="card-title">Ingresar nueva mascota a su lista</h5>
           <p class="card-text">Ingrese un animal a su lista de mascotas para tener en cuenta en futuras consultas</p>
-         <a href="#" class="btn btn-primary">Consultar</a>
+         <a href="/gestionMascotas/" class="btn btn-primary">Consultar</a>
         </div>
       </div>
     </div>
   </div>
 
 </main>
-
 <footer class="footer mt-auto py-3 bg-gray-dark">
   <div class="espacio">
     <a>Kevin Ezequiel Lorenzo</a><br>

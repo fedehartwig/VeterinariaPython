@@ -8,106 +8,93 @@
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	
-	<link rel="stylesheet" href="css/style_historial.css">
+	{%load static%}
+	
+    <link rel="stylesheet" href = '{% static "css/style_historial.css" %}' >
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-  	<div class="container-fluid">
-		<ul class="navbar-nav me-auto mb-2 mb-md-0">
-			<li class="nav-item">
-			  <a class="nav-link active" aria-current="page">Nombre de usuario</a>
-			</li> 
-			<li class="nav-item">
-			  <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="login.html">Cerrar sesión</a></form>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link active" aria-current="page" href="cambiar_contrasenia">Cambiar contraseña</a>
-			  </li>         
-		  </ul>
-      <div class="navbar-brand">
-        <a>Veterinaria: Patitas Por el Mundo</a>
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page">{{nombre}} {{apellido}}</a>
+          </li> 
+          <li class="nav-item">
+            <form action="/logout/" method="get"><a class="nav-link active" aria-current="page" href="/logout/">Cerrar sesión</a></form>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/cambiar_contrasenia/">Cambiar contraseña</a>
+          </li>         
+        </ul>
+        <div class="navbar-brand">
+          <a>Veterinaria: Patitas Por el Mundo</a>
+        </div>
       </div>
 	  
     </div>
   </nav>
 	</head>
 	<body>
-	<section class="ftco-section">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Historial de consultas</h2>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="table-wrap">
-						<table class="table">
-						  <thead class="thead-dark">
-						    <tr>
-						      <th>Número de consulta</th>
-						      <th>Fecha</th>
-							  <th>Sede</th>
-							  <th>Médico</th>
-						      <th>&nbsp;</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr class="alert" role="alert">
-						      <th scope="row">001</th>
-						      <td>11/22/2023</td>
-							  <td>Hospital Pena</td>
-							  <td>Dr. Mengueche</td>
-						      <td>
-								 <a href="#" class="update"> 
-				            	 <span><i>Modificar Consulta</i></span>
-				          		</a>
-				        	  </td>
-						    </tr>
-							<tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Favaloro</td>
-								<td>
-									<a href="#" class="update"> 
-									<span><i>Modificar Consulta</i></span>
-									</a>
-								</td>
-							  </tr>
-							  <tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Fvaloro</td>
-								<td>
-									<a href="#" class="update"> 
-									<span><i>Modificar Consulta</i></span>
-									</a>
-								</td>
-							  </tr>
-							  <tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Favaloro</td>
-								<td>
-									<a href="#" class="update"> 
-									<span><i>Modificar Consulta</i></span>
-									</a>
-								</td>
-							  </tr>
-						  </tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
+        <section class="ftco-section">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-4">
+                        <div class="login-wrap p-0">
+                      <h3 class="mb-4 text-center">Solicitar una consulta médica</h3>
+                    <form action="/post_consulta/" class="signin-form" method = "post">
+                      {% csrf_token %}
+                          <div class="form-group">
+                            <a>Fecha y hora</a>
+                              <input type="datetime-local" class="form-control" name="fecha" required>
+                          </div>
+                            <div class="form-group">
+                                <label for="cars">Seleccione un médico:</label>
+                                <select class="form-select" aria-label="Default select example" name="medico" id="id_medico">
+                                    <option selected>---</option>
+                                    {% if listaMedicos %}
+                                      {% for medico in listaMedicos%}
+                                    <option value="{{medico.1}} {{medico.2}}">{{ medico.1 }} {{ medico.2 }}</option>
+                                      {% endfor%}
+                                    {% endif %}  
+                                  </select>
+                                    </div>
+                            <div class="form-group">
+                                <label for="cars">Seleccione una sede:</label>
+                                <select class="form-select" aria-label="Default select example" name="sede" id="id_sede">
+                                    <option selected>---</option>
+                                    {% if listaSedes %}
+                                      {% for sede in listaSedes%}
+                                    <option value="{{sede.0}}">{{ sede.0 }}</option>
+                                      {% endfor%}
+                                    {% endif %}
+                                  </select>
+                                  <!-- {% if messages %}
+                                      <ul class="messages">
+                                          {% for message in messages %}
+                                          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                          {% endfor %}
+                                      </ul>    
+                                  {% endif %} -->
+                            </div>
+                    <div class="form-group">
+                        <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </section>
 
-  <script src="js/jquery.min.js"></script>
-  <script src="js/popper.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/main.js"></script>
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/popper.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/main.js"></script>
+  <br><br><br><br>
   <footer class="pie">
 	<div class="espacio">
 	  <a>Kevin Ezequiel Lorenzo</a><br>
