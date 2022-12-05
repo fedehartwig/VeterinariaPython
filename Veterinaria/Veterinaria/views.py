@@ -87,14 +87,14 @@ def post_ingresoMascota(request):
     peso = request.POST.get("peso")
     img = request.POST.get("img")
     especie = request.POST.get("especie")
-    raza = request.POST.get("raza") #agregar raza al formulario
+    desc = request.POST.get("descripcion") #agregar raza al formulario
 
     #implementar control con reconocimiento de imagenes para ver q la especie se
     #corresponda con la imagen, luego convertir imagen a link/path
     
     linkimg = None #cambiar por conversion a link/path
     print("especie:", especie)
-    if db.create_mascota(nombreM, edadM, peso, img, especie, raza, request.session['email']):
+    if db.create_mascota(nombreM, edadM, peso, img, especie, desc, request.session['email']):
         messages.info(request, "Tu mascota se guardo satisfactoriamente!")
         return redirect('home')
     else:
@@ -168,8 +168,8 @@ def agendar_consulta(request):
         return redirect('login')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos(), "listaSedes" : db.listaSedes()}
-    return render(request, "ingreso_consulta.html", contexto)  
+    #contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos(), "listaSedes" : db.listaSedes()}
+    return render(request, "ingreso_consulta.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})  
         
 
 
@@ -208,3 +208,4 @@ def historial_consultas(request):
 ######cambiar como ingresar nombre de medico en modificar consulta a una seleccion como en agendar
 ###### base de datos metodos q me traigan sedes y medicos 
 ###### separar especie de raza en base de datos (o directamente eliminar raza y fue)
+
