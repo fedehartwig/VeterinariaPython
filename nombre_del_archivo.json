@@ -1,0 +1,16 @@
+{
+    "players": [
+        {
+            "name": "Lionel Messi",
+            "team": "PSG"
+        },
+        {
+            "name": "Cristiano Ronaldo",
+            "team": "Manchester"
+        },
+        {
+            "name": "Neymar Jr.",
+            "team": "PSG"
+        }
+    ]
+}
