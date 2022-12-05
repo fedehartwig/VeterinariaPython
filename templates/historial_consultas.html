@@ -54,50 +54,21 @@
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr class="alert" role="alert">
-						      <th scope="row">001</th>
-						      <td>11/22/2023</td>
-							  <td>Hospital Pena</td>
-							  <td>Dr. Mengueche</td>
-						      <td>
-								 <a href="#" class="update"> 
-				            	 <span><i>Modificar Consulta</i></span>
-				          		</a>
-				        	  </td>
-						    </tr>
-							<tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Favaloro</td>
+							{% if consultas %}
+								{% for consulta in consultas %}
+								<tr class="alert" role="alert">
+								<th scope="row">{{ consulta.0 }}</th>
+								<td>{{ consulta.3 }}</td>
+								<td>{{ consulta.4 }}</td>
+								<td>{{ consulta.5 }}</td>
 								<td>
-									<a href="#" class="update"> 
+									<a href="/modificar_consulta/{{consulta.0}}" class="update"> 
 									<span><i>Modificar Consulta</i></span>
 									</a>
 								</td>
-							  </tr>
-							  <tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Fvaloro</td>
-								<td>
-									<a href="#" class="update"> 
-									<span><i>Modificar Consulta</i></span>
-									</a>
-								</td>
-							  </tr>
-							  <tr class="alert" role="alert">
-								<th scope="row">001</th>
-								<td>11/22/2023</td>
-								<td>Hospital Pena</td>
-								<td>Dr. Favaloro</td>
-								<td>
-									<a href="#" class="update"> 
-									<span><i>Modificar Consulta</i></span>
-									</a>
-								</td>
-							  </tr>
+								</tr>
+								{% endfor %}
+							{% endif %}
 						  </tbody>
 						</table>
 					</div>
