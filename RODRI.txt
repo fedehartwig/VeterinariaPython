@@ -1,0 +1,30 @@
+{
+    "players": [
+        {
+            "name": "Lionel Messi",
+            "team": "PSG"
+        },
+        {
+            "name": "Cristiano Ronaldo",
+            "team": "Manchester"
+        },
+        {
+            "name": "Neymar Jr.",
+            "team": "PSG"
+        }
+    ]
+}
+import json
+
+
+with open('players.json', 'r') as file:
+    players_data = json.load(file)
+
+
+players_data['players'].append({
+    "name": "Martin Palermo",
+    "team": "Bocal"
+})
+
+with open('players.json', 'w') as file:
+    json.dump(players_data, file)
