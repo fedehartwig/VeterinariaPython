@@ -25,7 +25,7 @@
     <!-- Custom styles for this template -->
     {%load static%}
 	
-    <link rel="stylesheet" href = '{% static "css/style_index.css" %}' >
+    <link rel="stylesheet" href = '{% static "css/style_historial.css" %}' >
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -49,13 +49,13 @@
           </li>       
         </ul>
         <div class="navbar-brand">
-          <a>Veterinaria: Patitas Por el Mundo</a>
+          <a href="/post_usuario/">Veterinaria: Patitas Por el Mundo</a>
         </div>
       </div>
     </div>
   </nav>
 </header>
-
+<br><br><br><br>
 <!-- Begin page content -->
 <main class="flex-shrink-0">
   <div class="container">
@@ -91,16 +91,22 @@
       </div>
     </div>
   </div>
-
 </main>
-<footer class="footer mt-auto py-3 bg-gray-dark">
+<script src="/static/js/jquery.min.js"></script>
+  <script src="/static/js/popper.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/main.js"></script>
+<footer class="pie">
   <div class="espacio">
-    <a>Kevin Ezequiel Lorenzo</a><br>
-    <a>Gustavo Porcel</a><br>
-    <a>Germán Belucci</a><br>
-    <a>Federico Hartwing</a><br>
-    <a>Gerardo Calabrese</a>
+  <div class="blanquito">
+  <a>Kevin Ezequiel Lorenzo</a><br>
+  <a>Gustavo Porcel</a><br>
+  <a>Germán Belucci</a><br>
+  <a>Federico Hartwing</a><br>
+  <a>Gerardo Calabrese</a>
   </div>
+  </div>
+  <br><br><br>
 </footer>
     <script src="/docs/5.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
   </body>

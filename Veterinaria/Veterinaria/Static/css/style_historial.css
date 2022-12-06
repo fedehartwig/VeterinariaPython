@@ -8207,11 +8207,11 @@ h1, h2, h3, h4, h5,
     font-size: 12px;
     color: green; }
   .espacio{
-    padding-top:10px;
+    padding-top:30px;
     margin-left:100px;
   }
   
- .a{
+ .blanquito{
   color: white;
  }
 
@@ -8220,7 +8220,12 @@ h1, h2, h3, h4, h5,
  }
 
  .pie{
+  position: relative;
   background-color: var(--gray-dark);
   height: 171px;
- }
+  top: 150px;
+  width: 1900px;
+  height: 233px;
+  font-size: 16px;  
+}
 
