@@ -11,7 +11,7 @@ class Database():
         self.connection = pymysql.connect(
             host='localhost',
             user='root',
-            password='1234',
+            password='Tuvieja22$', #1 2 3 4
             db='proyecto_final_vet'
         )
         self.cursor = self.connection.cursor()
@@ -46,6 +46,7 @@ class Database():
             # print("DNI:", user[2])
             # print("Telefono:", user[3])
             # print("Mail:", user[4])
+            # print("Rol:", user[5])
             # print (user)
             return flag, user
 
@@ -71,8 +72,12 @@ class Database():
 
     # ANDA PIOLA - devuelve 1 si creo el user, 0 sino
     def create_usuarios(self, nombre, apellido, dni, telefono, mail, password):
+        sql1 = 'select idrolUser from roluser where nombreRol = "Usuario"'
+        self.cursor.execute(sql1)
+        idrolUser = self.cursor.fetchone()
+        
         sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password, idrolUser) values ('{}', '{}', '{}', '{}', '{}', '{}','{}')".format(
-            nombre, apellido, dni, telefono, mail, password, 1)
+            nombre, apellido, dni, telefono, mail, password, idrolUser[0])
         flag = 0
         try:
             self.cursor.execute(sql)
@@ -84,9 +89,9 @@ class Database():
             return flag
 
     # ANDA PIOLA - devuelve 1 si creo la especie, 0 sino
-    def create_especie(self, tipo, descripcion):
-        sql = "insert into especie (Tipo, Descripcion) values ('{}', '{}')".format(
-            tipo, descripcion)
+    def create_especie(self, tipo):
+        sql = "insert into especie (Tipo) values ('{}')".format(
+            tipo)
         flag = 0
         try:
             self.cursor.execute(sql)
@@ -138,14 +143,18 @@ class Database():
             return flag
         
     def create_sedes(self, direccion, telefono, mail):  # ANDA PIOLA
+        flag = 0
         sql = "insert into sedes (Direccion, Telefono, Mail) values ('{}', '{}', '{}')".format(
             direccion, telefono, mail)
         try:
             self.cursor.execute(sql)
             self.connection.commit()
+            flag = 1
+            return flag
         except Exception as e:
             print("No se creo la sede")
-
+            return flag
+            
     # ANDA PIOLA - devuelve 1 si modifico el password, 0 sino
     def modificar_password_usuario(self, mail, passwordNew):
         sql = "SELECT Mail FROM usuarios"
@@ -281,7 +290,7 @@ class Database():
         players_data['turnos'].append(datos)
 
         with open('turnos.json', 'w') as file:
-            json.dump(players_data, file)
+            json.dump(players_data, file, indent = 2)
             
         try:
             self.cursor.execute(sql4)
@@ -349,7 +358,7 @@ class Database():
         players_data['turnos'].append(datos)
 
         with open('turnos.json', 'w') as file:
-            json.dump(players_data, file)
+            json.dump(players_data, file, indent = 2)
 
         try:
             self.cursor.execute(sql4)
@@ -369,39 +378,77 @@ class Database():
             self.cursor.execute(sql)
             user = self.cursor.fetchall()
             lista = list(user)
-            print(type(lista[0]))
+           
 
             # lista = user[0][3].strftime("%Y-%m-%d %H:%M")
             for i in range(len(lista)):
                 lista[i] = list(lista[i])
                 lista[i][3] = user[i][3].strftime("%Y-%m-%d %H:%M")
-            # print(type(user[0][2]))
-            print(lista)
-            print(type(lista[0]))
+            
+            
             flag = 1
             return flag, lista
 
         except Exception as e:
             print("No hay nada en la tabla")
-            return flag
+            return flag, []
+
+    def listaMedicos (self):
+        sql = "SELECT * from empleados"
+        flag = 0
+        try:
+            self.cursor.execute(sql)
+            empleados = self.cursor.fetchall()
+            flag = 1
+            return flag, empleados
+
+        except Exception as e:
+            print("No hay nada en la tabla")
+            return flag, empleados
+
+    def listaSedes (self):
+        sql = "SELECT Direccion from sedes"
+        flag = 0
+        try:
+            self.cursor.execute(sql)
+            sedes = self.cursor.fetchall()
+            flag = 1
+            return flag, sedes
+
+        except Exception as e:
+            print("No hay nada en la tabla")
+            return flag, sedes
+
+    def traer_Especies (self):
+        sql = "SELECT Tipo from Especie"
+        flag = 0
+        try:
+            self.cursor.execute(sql)
+            especies = self.cursor.fetchall()
+            flag = 1
+            return flag, especies
+
+        except Exception as e:
+            print("No hay nada en la tabla")
+            return flag, especies
 
     # FUNCIONES QUE FALTAN: LISTAS DE SEDES (CALLE) Y DE VETERINARIOS (NOMBRE APELLIDO)
 
 
 mydb = Database()
-hola = print(mydb.traer_usuario("goleador3@gmail.com"))
+#hola = print(mydb.traer_usuario("goleador3@gmail.com"))
 # mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 # mydb.all_usuarios()
 # hola = mydb.login("roman@gmail.com", "roman123")
-# hola = mydb.create_especie("perro","bulldog")
-# mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","caniche","goleador3@gmail.com")
+hola = mydb.create_especie("perro")
+mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","goleador3@gmail.com")
 
-# mydb.create_roles("Veterinario")
-# mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
+#mydb.create_roles("Veterinario")
+#mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
 #mydb.cambiar_rol_user("usuario","goleador3@gmail.com")
 
-#mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
+# mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
@@ -420,16 +467,15 @@ hola = print(mydb.traer_usuario("goleador3@gmail.com"))
 #flag, hola = mydb.traer_usuario("goleador3@gmail.com")
 
 # hola = mydb.traer_mascotas_usuario("goleador3@gmail.com")
-
-
-
+#print(hola)
 # datos = {
 #     "Nombre": hola[0],
 #     "Apellido": hola[1],
 #     "DNI": hola[2],
 #     "Telefono": hola[3],
 #     "Mail": hola[4],
-#     "Accion": "Se trajo al usuario",
+#     "Rol" : hola[5]
+#     #"Accion": "Se trajo al usuario",
 # }
 
 
