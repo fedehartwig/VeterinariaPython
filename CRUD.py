@@ -2,7 +2,6 @@ import json
 import os.path
 from datetime import datetime
 from json.decoder import JSONDecodeError
-from cv2 import merge
 
 import pymysql
 
@@ -72,8 +71,8 @@ class Database():
 
     # ANDA PIOLA - devuelve 1 si creo el user, 0 sino
     def create_usuarios(self, nombre, apellido, dni, telefono, mail, password):
-        sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password) values ('{}', '{}', '{}', '{}', '{}', '{}')".format(
-            nombre, apellido, dni, telefono, mail, password)
+        sql = "insert into usuarios (Nombre, Apellido, DNI, Telefono, Mail, Password, idrolUser) values ('{}', '{}', '{}', '{}', '{}', '{}','{}')".format(
+            nombre, apellido, dni, telefono, mail, password, 1)
         flag = 0
         try:
             self.cursor.execute(sql)
@@ -106,6 +105,38 @@ class Database():
         except Exception as e:
             print("No se creo el rol")
 
+    def cambiar_rol_user(self, NombreRol, mailEnviado):  # ANDA PIOLA
+        sql = "SELECT * FROM rolUser"
+        sql2 = "SELECT Mail FROM usuarios"
+        flag = 0
+        idRol = 0
+        nuevoMail = ""
+        try:
+            self.cursor.execute(sql)
+            roles = self.cursor.fetchall()
+            for rol in roles:
+                if rol[1] == NombreRol:
+                    idRol = rol[0]
+            
+            self.cursor.execute(sql2)
+            mails = self.cursor.fetchall()
+            for mail in mails:
+                if mail[0] == mailEnviado:
+                    nuevoMail = mailEnviado
+        except Exception as e:
+            print("No hay nada en la tabla")
+
+        sql3 = "Update usuarios SET idrolUser = '{}' WHERE mail = '{}'".format(
+                            idRol, nuevoMail)
+        try:
+            self.cursor.execute(sql3)
+            self.connection.commit()
+            flag = 1
+            return flag
+        except Exception as e:
+            print("No se creo el empleado")
+            return flag
+        
     def create_sedes(self, direccion, telefono, mail):  # ANDA PIOLA
         sql = "insert into sedes (Direccion, Telefono, Mail) values ('{}', '{}', '{}')".format(
             direccion, telefono, mail)
@@ -302,6 +333,24 @@ class Database():
         date = datetime.strptime(time_data, format_data)
         sql4 = "update turno set Fecha = ('{}'), ID_Usuarios = ('{}'), ID_Empleados = ('{}') , ID_Sedes = ('{}') where ID_Turno = ('{}')".format(
             date, idUsuario, idEmple, idSedes, idConsulta)
+        
+        with open('turnos.json', 'r') as file:
+            players_data = json.load(file)
+
+        datos = {"fecha": fecha, 
+            "hora": hora, 
+            "mailUsuario": mailUsuario, 
+            "direcSede": direcSede, 
+            "NombreEmpleado": NombreEmpleado,
+            "ApellidoEmpleado": ApellidoEmpleado,
+            "Accion": "se modifico turno"
+            }
+
+        players_data['turnos'].append(datos)
+
+        with open('turnos.json', 'w') as file:
+            json.dump(players_data, file)
+
         try:
             self.cursor.execute(sql4)
             self.connection.commit()
@@ -350,14 +399,17 @@ mydb = Database()
 # mydb.create_roles("Veterinario")
 # mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
-# mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
+#mydb.cambiar_rol_user("usuario","goleador3@gmail.com")
+
+#mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
 
 # mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
-mydb.create_turno("2020-11-5", "17:30", "goleador4@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
+#mydb.create_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
+#mydb.update_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez", 2)
 
 # now='5/5/22'
 # print("Before", now)
@@ -365,28 +417,28 @@ mydb.create_turno("2020-11-5", "17:30", "goleador4@gmail.com","Rivada 543" , "Ca
 # print("After", now)
 # cursor.execute("INSERT INTO table (name, id, datecolumn) VALUES (%s, %s, %s)",(name, 4,now))
 
-flag, hola = mydb.traer_usuario("goleador3@gmail.com")
+#flag, hola = mydb.traer_usuario("goleador3@gmail.com")
 
 # hola = mydb.traer_mascotas_usuario("goleador3@gmail.com")
 
 
 
-datos = {
-    "Nombre": hola[0],
-    "Apellido": hola[1],
-    "DNI": hola[2],
-    "Telefono": hola[3],
-    "Mail": hola[4],
-    "Accion": "Se trajo al usuario",
-}
+# datos = {
+#     "Nombre": hola[0],
+#     "Apellido": hola[1],
+#     "DNI": hola[2],
+#     "Telefono": hola[3],
+#     "Mail": hola[4],
+#     "Accion": "Se trajo al usuario",
+# }
 
 
 
-with open('players.json', 'r') as file:
-    players_data = json.load(file)
+# with open('players.json', 'r') as file:
+#     players_data = json.load(file)
 
 
-players_data['medicos'].append(datos)
+# players_data['medicos'].append(datos)
 
-with open('players.json', 'w') as file:
-    json.dump(players_data, file)
+# with open('players.json', 'w') as file:
+#     json.dump(players_data, file)
