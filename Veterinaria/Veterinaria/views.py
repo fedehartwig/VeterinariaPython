@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.template import Template, Context, loader
 from django.shortcuts import render, redirect
 from django.contrib import sessions
+from django.core.files.storage import FileSystemStorage
+
+from procesamiento_imagenes import detectar_imagen
 
 from CRUD import Database
 
@@ -28,13 +31,14 @@ def gestionarMascotas(request):
     request.session['hubo_error_nc'] = False
     request.session['hubo_error_nueva_c'] = False
     request.session.modified = True
-    return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido'],"listaEspecies":db.traer_Especies()[1]})
+    return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido'],"listaEspecies":db.traer_Especies()[1], "flag" : request.session['hubo_error_mascota']})
 
 def modificarCons(request, idConsulta): 
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] == 'Admin': return redirect('home')
     request.session['hubo_error_nc'] = False
     request.session['hubo_error_nueva_c'] = False
+    request.session['hubo_error_mascota'] = False
     request.session['idCons'] = idConsulta
     request.session.modified = True
     contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
@@ -45,6 +49,7 @@ def modificarCont(request):
     if 'hubo_error_nc' not in request.session:
         request.session['hubo_error_nc'] = False
         request.session['hubo_error_nueva_c'] = False
+        request.session['hubo_error_mascota'] = False
         request.session.modified = True
     return render(request, "cambiar_contrasenia.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "hubo_error" : request.session['hubo_error_nc']})
 
@@ -86,19 +91,30 @@ def post_ingresoMascota(request):
     nombreM = request.POST.get("nombre")
     edadM = request.POST.get("edad")
     peso = request.POST.get("peso")
-    img = request.POST.get("img")
-    especie = request.POST.get("especie")    
-
-    #implementar control con reconocimiento de imagenes para ver q la especie se
-    #corresponda con la imagen, luego convertir imagen a link/path
     
-    linkimg = None #cambiar por conversion a link/path
+    especie = request.POST.get("especie")    
+    
+    if request.method == 'POST' and request.FILES['img']:
+        archivo = request.FILES['img']
+        fs = FileSystemStorage()
+        nombre_archivo= fs.save(archivo.name, archivo) 
+        path_archivo = fs.url(nombre_archivo)
+        path_archivo =path_archivo[1:]
+    
+    
+    flag1, flag2 = detectar_imagen(path_archivo,especie)    
+    print("Se pudo detecar la imagen:", flag1)
+    print("La imagen coincide:", flag2)
+    
+    if not flag1 or not flag2:
+        request.session['hubo_error_mascota'] = True
+        request.session.modified = True
+        fs.delete(nombre_archivo)
+        return redirect('gestion Mascotas')    
 
-    if db.create_mascota(nombreM, edadM, peso, img, especie, request.session['email']):
-        return redirect('home')
-
-    return redirect('historial')
-        
+    db.create_mascota(nombreM, edadM, peso, path_archivo, especie, request.session['email'])
+    return redirect('home')
+    
         
 def logout(request):
     request.session.clear()
@@ -195,6 +211,7 @@ def inicio(request):
         request.session.modified = True
         return render(request, "home_admin.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
     
+    request.session['hubo_error_mascota'] = False
     request.session['hubo_error_nueva_c'] = False 
     request.session.modified = True
     return render(request, "index.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
@@ -203,6 +220,7 @@ def agendar_consulta(request):
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
+    request.session['hubo_error_mascota'] = False
     request.session.modified = True
     contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1], "flag" : request.session['hubo_error_nueva_c']}
     return render(request, "ingreso_consulta.html", contexto)  
@@ -228,6 +246,7 @@ def historial_consultas(request):
     if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
     request.session['hubo_error_nueva_c'] = False
+    request.session['hubo_error_mascota'] = False
     request.session.modified = True    
     return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])[1]}) #ver como implementar la lista de consultas 
     

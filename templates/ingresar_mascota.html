@@ -45,7 +45,7 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                           <h3 class="mb-4 text-center">Ingrese una mascota a su lista</h3>
-                      <form action="/post_ingresoMascota/" class="signin-form" method = "POST">
+                      <form action="/post_ingresoMascota/" class="signin-form" method = "POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="form-group">
                           <label for="cars">Nombre de la mascota</label>
@@ -77,6 +77,8 @@
                           {% if flag %}
                           <div class="alert alert-danger" role="alert">
                             Hubo un error al ingresar la mascota.
+                            La imagen no se pudo detectar la imagen o
+                            la misma no coincide con la especie ingresada.
                           </div>
                           {% endif %}
                         <div class="form-group">
