@@ -24,14 +24,14 @@ def register(request):
 
 def gestionarMascotas(request):
     if 'logueado' not in request.session: return redirect('login')
-    if request.session['rol'] == 'admin': return redirect('home')
+    if request.session['rol'] == 'Admin': return redirect('home')
     request.session['hubo_error_nc'] = False
     request.session.modified = True
     return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido'],"listaEspecies":db.traer_Especies()[1]})
 
 def modificarCons(request, idConsulta): 
     if 'logueado' not in request.session: return redirect('login')
-    if request.session['rol'] == 'admin': return redirect('home')
+    if request.session['rol'] == 'Admin': return redirect('home')
     request.session['hubo_error_nc'] = False
     request.session['idCons'] = idConsulta
     request.session.modified = True
@@ -149,7 +149,7 @@ def post_usuario(request):
         request.session['email'] = email_usr
         request.session['logueado'] = True
         request.session['hubo_error'] = False
-        #request.session['rol'] = usuario[5] ##Descomentar una vez q haya roles
+        request.session['rol'] = usuario[5] 
         request.session.modified = True        
         return redirect('home')
 
@@ -159,18 +159,17 @@ def post_usuario(request):
 
 def ingreso_sede(request):
     if 'logueado' not in request.session: return redirect('login')
-    #if request.session['rol'] != 'admin': return redirect('home') ##Descomentar cuando haya roles        
+    if request.session['rol'] != 'Admin': return redirect('home')        
     return render(request, "ingresar_sede.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
 
 def ingreso_vet(request):
     if 'logueado' not in request.session: return redirect('login')
-    #if request.session['rol'] != 'admin': return redirect('home') ##Descomentar cuando haya roles        
+    if request.session['rol'] != 'Admin': return redirect('home')    
     return render(request, "ingresar_medico.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
 
 def ingreso_especie(request):
     if 'logueado' not in request.session: return redirect('login')
-    #if request.session['rol'] != 'admin': ##Descomentar cuando haya roles
-        #return redirect('home')
+    if request.session['rol'] != 'Admin': return redirect('home')
     return render(request, "ingresar_especie.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
 
 def inicio(request):
@@ -178,14 +177,14 @@ def inicio(request):
     request.session['hubo_error_nc'] = False
     request.session.modified = True
 
-    #if request.session['rol'] == 'admin': ##Descomentar cuando haya roles
-        #return render(request, "home_admin.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
+    if request.session['rol'] == 'Admin': 
+        return render(request, "home_admin.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
     
     return render(request, "index.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
 
 def agendar_consulta(request):
     if 'logueado' not in request.session: return redirect('login')
-    #if request.session['rol'] == 'admin': return redirect('home') ## Descomentar cuando haya roles
+    if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
     request.session.modified = True
     contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
@@ -209,7 +208,7 @@ def post_consulta(request):
 
 def historial_consultas(request):
     if 'logueado' not in request.session: return redirect('login')
-    #if request.session['rol'] == 'admin': return redirect('home') ##Descomentar una vez q haya roles
+    if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
     request.session.modified = True    
     return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])[1]}) #ver como implementar la lista de consultas 
@@ -219,6 +218,7 @@ def post_ingr_sede(request):
     direccion = request.POST.get('direccion')
     telefono = request.POST.get('telefono')
     email = request.POST.get('email')
+    ##Informar si se puudo crear o no la sede
     if db.create_sedes(direccion, telefono, email): return redirect('home')
     return redirect('ingresar sede')
 
@@ -227,20 +227,22 @@ def post_ingr_vet(request):
     nombre = request.POST.get('nombre')
     apellido = request.POST.get('apellido')
     dni = request.POST.get('dni')
+    ##Informar si se puudo crear o no el medico
     if db.create_empleados(nombre, apellido, dni, "Veterinario"): return redirect('home')
     return redirect('ingresar vet')
 
 def post_ingr_esp(request):
     if 'tipo' not in request.POST: return redirect('home')
-    tipo = request.POST.get('tipo')
-    #if db.create_especie(tipo): return redirect('home') ##Descomentar cuando se corrija el tema de la descripcion
+    tipo = request.POST.get('tipo')    
+    ##Informar si se puudo crear o no la especie
+    if db.create_especie(tipo): return redirect('home') 
     return redirect('ingresar especie')
 
 #TO DO
 #Control de imagegn con csv
 #Conversion de img a link/path
 #Informar al usuario si se pudo agendar la consulta
-#Informar al admin si hubo error creando la sede, el nuevo veterinario o la especie
+#Informar al Admin si hubo error creando la sede, el nuevo veterinario o la especie
 
 #Hablar con CRUD:
 ##agregar roles en tabla de roles 'Usuario', 'Admin', y columna de 'ROL' en la tabla de usuarios
@@ -249,5 +251,5 @@ def post_ingr_esp(request):
 
 #Hablar con front:
 #Informar al usuario si se pudo agendar la consulta
-#Informar al admin si hubo error creando la sede, el nuevo veterinario o la especie
+#Informar al Admin si hubo error creando la sede, el nuevo veterinario o la especie
 

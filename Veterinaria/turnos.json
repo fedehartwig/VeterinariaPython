@@ -1,0 +1,22 @@
+{
+  "turnos": [
+    {
+      "fecha": "2022-12-07",
+      "hora": "20:28",
+      "mailUsuario": "goleador3@gmail.com",
+      "direcSede": "Rivada 543",
+      "NombreEmpleado": "Carlos",
+      "ApellidoEmpleado": "Rodriguez",
+      "Accion": "se creo turno"
+    },
+    {
+      "fecha": "2022-12-08",
+      "hora": "20:34",
+      "mailUsuario": "goleador3@gmail.com",
+      "direcSede": "Rivada 543",
+      "NombreEmpleado": "Carlos",
+      "ApellidoEmpleado": "Rodriguez",
+      "Accion": "se modifico turno"
+    }
+  ]
+}
