@@ -69,7 +69,12 @@
                         <div class="form-group">
                           <label for="cars">Tipo:</label>
                           <input type="text" class="form-control" placeholder="---" name="tipo" required>
-                        </div>                        
+                        </div>     
+                          {% if flag %}
+                            <div class="alert alert-danger" role="alert">
+                              Hubo un error al ingresar la especie.
+                            </div>
+                          {% endif %}                    
                         <div class="form-group">
                           <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
                         </div>

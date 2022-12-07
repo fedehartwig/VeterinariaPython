@@ -61,11 +61,11 @@
                         </div>
                         <div class="form-group">
                           <label for="cars">Ingrese una foto de su mascota</label>
-                          <input type="file" class="form-control" name="img" required accept=".png, .PNG, .jpg, .JPG">
+                          <input type="file" class="form-control" name="img" required accept=".png, .PNG, .jpg, .JPG" required>
                         </div>
                           <div class="form-group">
                             <label for="cars">Seleccione la especie:</label>
-                              <select class="form-select" aria-label="Default select example" name="especie" id="id_sede">
+                              <select class="form-select" aria-label="Default select example" name="especie" id="id_sede" required>
                                 <option selected>---</option>
                                 {% if listaEspecies %}
                                   {% for especie in listaEspecies %}
@@ -73,7 +73,12 @@
                                   {% endfor%}
                                 {% endif%}
                               </select>
-                          </div>                          
+                          </div>
+                          {% if flag %}
+                          <div class="alert alert-danger" role="alert">
+                            Hubo un error al ingresar la mascota.
+                          </div>
+                          {% endif %}
                         <div class="form-group">
                           <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
                         </div>

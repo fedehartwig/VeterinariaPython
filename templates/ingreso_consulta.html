@@ -55,8 +55,8 @@
                           </div>
                             <div class="form-group">
                                 <label for="cars">Seleccione un médico:</label>
-                                <select class="form-select" aria-label="Default select example" name="medico" id="id_medico">
-                                    <option selected>---</option>
+                                <select class="form-select" aria-label="Default select example" name="medico" id="id_medico" required>
+                                    
                                     {% if listaMedicos %}
                                       {% for medico in listaMedicos%}
                                     <option value="{{medico.1}} {{medico.2}}">{{ medico.1 }} {{ medico.2 }}</option>
@@ -66,22 +66,20 @@
                                     </div>
                             <div class="form-group">
                                 <label for="cars">Seleccione una sede:</label>
-                                <select class="form-select" aria-label="Default select example" name="sede" id="id_sede">
-                                    <option selected>---</option>
+                                <select class="form-select" aria-label="Default select example" name="sede" id="id_sede" required>
+                              
                                     {% if listaSedes %}
                                       {% for sede in listaSedes%}
                                     <option value="{{sede.0}}">{{ sede.0 }}</option>
                                       {% endfor%}
                                     {% endif %}
                                   </select>
-                                  <!-- {% if messages %}
-                                      <ul class="messages">
-                                          {% for message in messages %}
-                                          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                          {% endfor %}
-                                      </ul>    
-                                  {% endif %} -->
                             </div>
+                            {% if flag %}
+                            <div class="alert alert-danger" role="alert">
+                              Hubo un error al ingresar la consulta.
+                            </div>
+                          {% endif %}        
                     <div class="form-group">
                         <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
                     </div>
