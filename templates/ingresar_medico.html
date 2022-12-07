@@ -25,9 +25,9 @@
     
     <!-- Custom styles for this template -->
 	
-  <!--{%load static%}
-  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>-->
-  <link rel="stylesheet" href ="css/style_index.css">
+  {%load static%}
+  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>
+  
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -51,7 +51,7 @@
           </li>       
         </ul>
         <div class="navbar-brand">
-          <a href="/post_usuario/">Veterinaria: Patitas Por el Mundo</a>
+          <a href="/">Veterinaria: Patitas Por el Mundo</a>
         </div>
       </div>
     </div>
@@ -66,7 +66,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                           <h3 class="mb-4 text-center">Ingresar al nuevo profesional</h3>
-                      <form class="row g-3">
+                      <form action = "/post_ingreso_vet/" class="row g-3" method = "POST">
+                        {% csrf_token %}
                         <div class="col-md-6">
                           <label class="form-label">Nombre:</label>
                           <input type="text" class="form-control" name="nombre">
@@ -87,10 +88,10 @@
             </div>
         </section>
 </main>
-<!--<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/main.js"></script>-->
+<script src="/static/js/main.js"></script>
 <br><br>
 <footer class="pie">
       <div class="espacio">

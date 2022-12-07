@@ -25,10 +25,10 @@
     
     <!-- Custom styles for this template -->
 	 
-  <!--{%load static%}
-  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>-->
+  {%load static%}
+  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>
 
-  <link rel="stylesheet" href ="css/style_index.css">
+  
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -52,7 +52,7 @@
           </li>       
         </ul>
         <div class="navbar-brand">
-          <a href="/post_usuario/">Veterinaria: Patitas Por el Mundo</a>
+          <a href="/">Veterinaria: Patitas Por el Mundo</a>
         </div>
       </div>
     </div>
@@ -67,7 +67,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                           <h3 class="mb-4 text-center">Ingresar una sede de atención veterinaria</h3>
-                      <form action="..." class="signin-form" method = "POST">
+                      <form action="/post_ingreso_sede/" class="signin-form" method = "POST">
+                        {% csrf_token %}
                         <div class="form-group">
                           <label for="cars">Dirección del centro médico:</label>
                           <input type="text" class="form-control" placeholder="---" name="direccion" required>
@@ -89,10 +90,10 @@
         </section>
 </main>
 
-<!--<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/main.js"></script>-->
+<script src="/static/js/main.js"></script>
 
 <footer class="pie">
       <div class="espacio">

@@ -24,9 +24,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     
   <!-- Custom styles for this template -->
-	<!--{%load static%}
-  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>-->
-  <link rel="stylesheet" href ="css/style_index.css">
+	{%load static%}
+  <link rel="stylesheet" href = '{% static "css/style_index.css" %}'>
   </head>
   <body class="d-flex flex-column h-100">
     
@@ -50,7 +49,7 @@
           </li>       
         </ul>
         <div class="navbar-brand">
-          <a href="/post_usuario/">Veterinaria: Patitas Por el Mundo</a>
+          <a href="/">Veterinaria: Patitas Por el Mundo</a>
         </div>
       </div>
     </div>
@@ -65,15 +64,12 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="login-wrap p-0">
                           <h3 class="mb-4 text-center">Ingresar una especie</h3>
-                      <form action="..." class="signin-form" method = "POST">
+                      <form action="/post_ingr_esp/" class="signin-form" method = "POST">
+                        {% csrf_token %}
                         <div class="form-group">
                           <label for="cars">Tipo:</label>
                           <input type="text" class="form-control" placeholder="---" name="tipo" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="cars">Descrípción:</label>
-                          <input type="text" class="form-control" placeholder="---" name="description" required>
-                        </div>
+                        </div>                        
                         <div class="form-group">
                           <button type="submit" class="form-control btn btn-primary submit px-3">Enviar</button>
                         </div>
@@ -83,10 +79,10 @@
         </section>
 </main>
 
-<!--<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.min.js"></script>
 <script src="/static/js/popper.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
-<script src="/static/js/main.js"></script>-->
+<script src="/static/js/main.js"></script>
 <br><br><br><br>
 <footer class="pie">
       <div class="espacio">
