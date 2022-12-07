@@ -26,6 +26,7 @@ def gestionarMascotas(request):
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] == 'Admin': return redirect('home')
     request.session['hubo_error_nc'] = False
+    request.session['hubo_error_nueva_c'] = False
     request.session.modified = True
     return render(request, "ingresar_mascota.html", {'nombre' : request.session['nombre'], 'apellido' : request.session['apellido'],"listaEspecies":db.traer_Especies()[1]})
 
@@ -33,6 +34,7 @@ def modificarCons(request, idConsulta):
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] == 'Admin': return redirect('home')
     request.session['hubo_error_nc'] = False
+    request.session['hubo_error_nueva_c'] = False
     request.session['idCons'] = idConsulta
     request.session.modified = True
     contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
@@ -42,6 +44,7 @@ def modificarCont(request):
     if 'logueado' not in request.session: return redirect('login')
     if 'hubo_error_nc' not in request.session:
         request.session['hubo_error_nc'] = False
+        request.session['hubo_error_nueva_c'] = False
         request.session.modified = True
     return render(request, "cambiar_contrasenia.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "hubo_error" : request.session['hubo_error_nc']})
 
@@ -125,6 +128,7 @@ def post_register(request):
             request.session['telefono'] = telefono_usr
             request.session['email'] = email_usr
             request.session['pass'] = contrasenia_usr
+            request.session['rol'] = 'Usuario'
             request.session['logueado'] = True
             request.session.modified = True
             return redirect('home')
@@ -159,27 +163,40 @@ def post_usuario(request):
 
 def ingreso_sede(request):
     if 'logueado' not in request.session: return redirect('login')
-    if request.session['rol'] != 'Admin': return redirect('home')        
-    return render(request, "ingresar_sede.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
+    if request.session['rol'] != 'Admin': return redirect('home')
+    request.session['hubo_error_vet'] = False 
+    request.session['hubo_error_esp'] = False
+    request.session.modified = True     
+    return render(request, "ingresar_sede.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido'], "flag" : request.session['hubo_error_sede']})
 
 def ingreso_vet(request):
     if 'logueado' not in request.session: return redirect('login')
-    if request.session['rol'] != 'Admin': return redirect('home')    
-    return render(request, "ingresar_medico.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
+    if request.session['rol'] != 'Admin': return redirect('home')
+    request.session['hubo_error_sede'] = False 
+    request.session['hubo_error_esp'] = False
+    request.session.modified = True         
+    return render(request, "ingresar_medico.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido'], "flag" : request.session['hubo_error_vet']})
 
 def ingreso_especie(request):
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] != 'Admin': return redirect('home')
-    return render(request, "ingresar_especie.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido']})
+    request.session['hubo_error_sede'] = False 
+    request.session['hubo_error_vet'] = False
+    request.session.modified = True    
+    return render(request, "ingresar_especie.html", {"nombre" : request.session['nombre'],  "apellido" : request.session['apellido'], "flag" : request.session['hubo_error_esp']})
 
-def inicio(request):
+def inicio(request):    
     if 'logueado' not in request.session: return redirect('login')       
     request.session['hubo_error_nc'] = False
-    request.session.modified = True
-
-    if request.session['rol'] == 'Admin': 
+    if request.session['rol'] == 'Admin':
+        request.session['hubo_error_sede'] = False 
+        request.session['hubo_error_vet'] = False
+        request.session['hubo_error_esp'] = False 
+        request.session.modified = True
         return render(request, "home_admin.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
     
+    request.session['hubo_error_nueva_c'] = False 
+    request.session.modified = True
     return render(request, "index.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
 
 def agendar_consulta(request):
@@ -187,7 +204,7 @@ def agendar_consulta(request):
     if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
     request.session.modified = True
-    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1]}
+    contexto = {"nombre" : request.session['nombre'], "apellido" : request.session['apellido'], "listaMedicos" : db.listaMedicos()[1], "listaSedes" : db.listaSedes()[1], "flag" : request.session['hubo_error_nueva_c']}
     return render(request, "ingreso_consulta.html", contexto)  
         
 def post_consulta(request):
@@ -200,16 +217,17 @@ def post_consulta(request):
     nombreM = aux[0]  
     apellidoM = aux[1]
     sede = request.POST.get("sede")
-    db.create_turno(fecha, hora, email_usr, sede, nombreM, apellidoM)#cambiar por la linea de abajo cuando se implemente el control
-    #if db.create_turno(fecha, hora, email_usr, sede, nombreM, apellidoM):
-        #informar si se pudo agendar o no la consulta
-     
-    return redirect('home')
+    if db.create_turno(fecha, hora, email_usr, sede, nombreM, apellidoM):
+        return redirect('home')     
+    request.session['hubo_error_nueva_c'] = True
+    request.session.modified = True
+    return redirect('consulta')
 
 def historial_consultas(request):
     if 'logueado' not in request.session: return redirect('login')
     if request.session['rol'] == 'Admin': return redirect('home') 
     request.session['hubo_error_nc'] = False
+    request.session['hubo_error_nueva_c'] = False
     request.session.modified = True    
     return render(request, "historial_consultas.html", {"nombre": request.session['nombre'], "apellido" : request.session['apellido'], "consultas" : db.traer_consultas_usuario(request.session['email'])[1]}) #ver como implementar la lista de consultas 
     
@@ -220,6 +238,8 @@ def post_ingr_sede(request):
     email = request.POST.get('email')
     ##Informar si se puudo crear o no la sede
     if db.create_sedes(direccion, telefono, email): return redirect('home')
+    request.session['hubo_error_sede'] = True
+    request.session.modified = True
     return redirect('ingresar sede')
 
 def post_ingr_vet(request):
@@ -229,6 +249,8 @@ def post_ingr_vet(request):
     dni = request.POST.get('dni')
     ##Informar si se puudo crear o no el medico
     if db.create_empleados(nombre, apellido, dni, "Veterinario"): return redirect('home')
+    request.session['hubo_error_vet'] = True
+    request.session.modified = True
     return redirect('ingresar vet')
 
 def post_ingr_esp(request):
@@ -236,20 +258,10 @@ def post_ingr_esp(request):
     tipo = request.POST.get('tipo')    
     ##Informar si se puudo crear o no la especie
     if db.create_especie(tipo): return redirect('home') 
+    request.session['hubo_error_esp'] = True
+    request.session.modified = True
     return redirect('ingresar especie')
 
-#TO DO
-#Control de imagegn con csv
-#Conversion de img a link/path
-#Informar al usuario si se pudo agendar la consulta
-#Informar al Admin si hubo error creando la sede, el nuevo veterinario o la especie
 
-#Hablar con CRUD:
-##agregar roles en tabla de roles 'Usuario', 'Admin', y columna de 'ROL' en la tabla de usuarios
-##agregar lo necesario en el crud para q venga el rol con el usuario
-##Borrar la columna de descripcion (no existe mas)
 
-#Hablar con front:
-#Informar al usuario si se pudo agendar la consulta
-#Informar al Admin si hubo error creando la sede, el nuevo veterinario o la especie
 
