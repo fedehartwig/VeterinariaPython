@@ -34,7 +34,7 @@ class Database():
 
     # ANDA PIOLA - devuelve el user (vacio o no) y un flag. Si flag = 0-> No hay usuarios, si flag=1 devuelve todos los campos del user
     def traer_usuario(self, mail):
-        sql = "SELECT Nombre, Apellido, DNI, Telefono, Mail FROM usuarios where Mail = ('{}')".format(
+        sql = "SELECT Nombre, Apellido, DNI, Telefono, Mail, roluser.nombreRol FROM usuarios JOIN roluser on usuarios.idrolUser = roluser.idroluser where Mail = ('{}')".format(
             mail)
         flag = 0
         try:
@@ -389,7 +389,7 @@ class Database():
 
 
 mydb = Database()
-# mydb.traer_consultas_usuario("goleador3@gmail.com")
+hola = print(mydb.traer_usuario("goleador3@gmail.com"))
 # mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 # mydb.all_usuarios()
 # hola = mydb.login("roman@gmail.com", "roman123")
