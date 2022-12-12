@@ -12,7 +12,7 @@ def login(request):
         request.session['hubo_error'] = False
     request.session['hubo_error_r'] = False
     request.session.modified = True
-    return render(request, "login.html",{"hubo_error" : request.session['hubo_error']})    
+    return render(request, "login.html",{"hubo_error" : request.session['hubo_error']})      
 
 def register(request):
     if 'logueado' in request.session: return redirect('home')
@@ -195,6 +195,7 @@ def inicio(request):
         request.session.modified = True
         return render(request, "home_admin.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
     
+    request.session['hubo_error_mascota'] = False
     request.session['hubo_error_nueva_c'] = False 
     request.session.modified = True
     return render(request, "index.html", {"nombre" : request.session['nombre'], "apellido" : request.session['apellido']})
