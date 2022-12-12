@@ -11,7 +11,7 @@ class Database():
         self.connection = pymysql.connect(
             host='localhost',
             user='root',
-            password='Tuvieja22$', #1 2 3 4
+            password='04112001', 
             db='proyecto_final_vet'
         )
         self.cursor = self.connection.cursor()
@@ -443,23 +443,23 @@ mydb = Database()
 # mydb.modificar_password_usuario("goleador3@gmail.com","1234")
 # mydb.all_usuarios()
 # hola = mydb.login("roman@gmail.com", "roman123")
-#hola = mydb.create_especie("perro")
-#mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","goleador3@gmail.com")
+hola = mydb.create_especie("perro")
+mydb.create_mascota("RODRI","3","20","Imagen/RODRI.png","perro","goleador3@gmail.com")
 
-#mydb.create_roles("Veterinario")
-#mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
+mydb.create_roles("Veterinario")
+mydb.create_sedes("Rivada 543","1145365123","vet@gmail.com")
 
-#mydb.cambiar_rol_user("usuario","goleador3@gmail.com")
+mydb.cambiar_rol_user("usuario","goleador3@gmail.com")
 
-# mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
+mydb.create_usuarios("Martin", "Palermo", "3", "3", "goleador3@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "4", "4", "goleador4@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "5", "5", "goleador5@gmail.com", "boca123")
 # mydb.create_usuarios("Martin", "Palermo", "6", "6", "goleador6@gmail.com", "boca123")
 
-# mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
+mydb.create_empleados("Carlos", "Rodriguez", "32154674", "Veterinario")
 
-#mydb.create_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
-#mydb.update_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez", 2)
+mydb.create_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez")
+mydb.update_turno("2020-10-12", "19:30", "goleador3@gmail.com","Rivada 543" , "Carlos", "Rodriguez", 2)
 
 # now='5/5/22'
 # print("Before", now)
