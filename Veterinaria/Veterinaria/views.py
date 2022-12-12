@@ -15,7 +15,7 @@ def login(request):
         request.session['hubo_error'] = False
     request.session['hubo_error_r'] = False
     request.session.modified = True
-    return render(request, "login.html",{"hubo_error" : request.session['hubo_error']})    
+    return render(request, "login.html",{"hubo_error" : request.session['hubo_error']})      
 
 def register(request):
     if 'logueado' in request.session: return redirect('home')

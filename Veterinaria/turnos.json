@@ -71,6 +71,24 @@
       "NombreEmpleado": "Carlos",
       "ApellidoEmpleado": "Rodriguez",
       "Accion": "se modifico turno"
+    },
+    {
+      "fecha": "2020-10-12",
+      "hora": "19:30",
+      "mailUsuario": "goleador3@gmail.com",
+      "direcSede": "Rivada 543",
+      "NombreEmpleado": "Carlos",
+      "ApellidoEmpleado": "Rodriguez",
+      "Accion": "se creo turno"
+    },
+    {
+      "fecha": "2020-10-12",
+      "hora": "19:30",
+      "mailUsuario": "goleador3@gmail.com",
+      "direcSede": "Rivada 543",
+      "NombreEmpleado": "Carlos",
+      "ApellidoEmpleado": "Rodriguez",
+      "Accion": "se modifico turno"
     }
   ]
 }
