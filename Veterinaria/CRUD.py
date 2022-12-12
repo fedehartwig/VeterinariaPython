@@ -11,20 +11,20 @@ class Database():
         self.connection = pymysql.connect(
             host='localhost',
             user='root',
-            password='Tuvieja22$', #1 2 3 4
+            password='04112001', #1 2 3 4
             db='proyecto_final_vet'
         )
         self.cursor = self.connection.cursor()
         print("La conexion fue exitosa")
 
-    def login(self, mail, password):  # ANDA PIOLA - devuelve 1 si esta correcta, 0 sino
-        sql = "select Mail, Password from usuarios where Mail = '{}' and Password = '{}' ".format(
-            mail, password)
+    def login (self, mail, password):   #ANDA PIOLA - devuelve 1 si esta correcta, 0 sino
+        sql= "select Mail, Password from usuarios where Mail = '{}' and Password = '{}' ".format(mail, password)
         flag = 0
         try:
             self.cursor.execute(sql)
             users = self.cursor.fetchone()
-            flag = 1
+            if users != None:
+                flag = 1
             # print(users[0])
             # print(users[1])
             return flag
@@ -485,7 +485,7 @@ mydb = Database()
 
 # with open('players.json', 'r') as file:
 #     players_data = json.load(file)
-
+print(mydb.login("gus@gmailcom","133323"))
 
 # players_data['medicos'].append(datos)
 
