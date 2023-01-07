@@ -1,34 +1,27 @@
-<div align="center" style="display:flex;justify-content:center; align-items:center;"><img src="static\media\sobre_el_proyecto\Capgemini-Logo.png" width="200"/><img src="static\media\sobre_el_proyecto\utn.png" width="200"/></div>
-
-# ✋ GetMeFive
+# ✋ Veterinaria: Patitas Por El Mundo
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![Django](https://img.shields.io/badge/django-%23092E20.svg?style=for-the-badge&logo=django&logoColor=white)
 ![OpenCV](https://img.shields.io/badge/opencv-%23white.svg?style=for-the-badge&logo=opencv&logoColor=white)
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
 ![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
 
 ## 🕹 Proyecto para Academia Python - Capgemini x UTN
 
 ### ✍ Descripción:
 
-Este proyecto fue realizado con una finalidad educativa para la Academia Python brindada por la empresa [Capgemini](https://www.capgemini.com/ar-es/) en colaboracion con la [UTN FRBA](https://www.frba.utn.edu.ar/), en el año 2022. El proyecto consiste en una pagina web que permite a los usuarios registrarse y loguearse, y poder jugar a contestar preguntas de distintos temas mediante la camara.
+Este proyecto fue realizado con una finalidad educativa para la Academia Python brindada por la empresa [Capgemini](https://www.capgemini.com/ar-es/) en colaboracion con la [UTN FRBA](https://www.frba.utn.edu.ar/), en el año 2022. El proyecto consiste en una pagina web que permite a los usuarios registrarse y loguearse, y poder realizar acciones para poder gestionar los turnos con una veterinaria online.
 
 ### 👀 Visitando la plataforma:
 
-**Inicio**: En esta vista presentamos los juegos disponibles los cuales podran ser accedidos siempre y cuando el usuario se encuentre registrado y logueado.
+**Inicio**: En esta vista se prentan las acciones principales que se pueden realizar en la plataforma que son Ingresar una mascota, dar de alta un turno y consultar tu historial de consultas.
 
-**Puntuaciones**: En esta vista presentamos la tabla de puntuaciones maximas de todos los jugadores de la plataforma, con la posibilidad de filtrar la tabla de acuerdo al nombre de jugador o tematica.
+**Cambiar Contraseña**: Con esta opción podrás reemplazar tu clave por otra que gustes. 
 
-**Sobre el proyecto**: En esta vista veras informacion extra sobre el proyecto asi como tambien vista previas del juego en funcionamiento
+**Pantalla de Registro**: Aqui podras registrarte y formar parte de esta gran comunidad.
 
-**Contacto**: Aqui podras encontrar informacion de contacto de los desarrolladores de la plataforma.
-
-**Registro**: Aqui podras registrarte y formar parte de esta gran comunidad.
-
-**Login**: En esta vista podras loguearte en el sistema lo que te permitira acceder a los juegos.
+**Pantalla de Login**: En esta vista podras loguearte en el sistema lo que te permitira acceder a los servicios de la página.
 
 ### 💻 Lanzar proyecto localmente:
 
